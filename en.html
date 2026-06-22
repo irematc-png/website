@@ -1,826 +1,721 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=AW-18131739913"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'AW-18131739913');
-</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>DREALIMA - Digital Growth Systems</title>
-
 <link rel="icon" href="minilogo.png" type="image/png">
- 
- 
 
+<script async src="https://www.googletagmanager.com/gtag/js?id=AW-18131739913"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'AW-18131739913');
+</script>
 
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
-
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
 <style>
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  color: #ffffff;
+  background:
+    linear-gradient(rgba(8, 15, 28, 0.82), rgba(8, 15, 28, 0.88)),
+    url("bgimage.jpeg");
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+}
+
+header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  height: 88px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 60px;
+  background: rgba(8, 15, 28, 0.76);
+  backdrop-filter: blur(18px);
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+}
+
+.logo img {
+  height: 105px;
+  width: auto;
+  display: block;
+  filter: drop-shadow(0 8px 22px rgba(0,0,0,0.35));
+}
+
+.nav-brand {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+}
+
+.brand-name {
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: 3px;
+}
+
+.brand-tag {
+  font-size: 12px;
+  color: rgba(255,255,255,0.62);
+  letter-spacing: 1.2px;
+}
+
+nav {
+  display: flex;
+  gap: 22px;
+  align-items: center;
+}
+
+nav a {
+  color: rgba(255,255,255,0.72);
+  text-decoration: none;
+  font-size: 13px;
+  letter-spacing: 0.7px;
+  padding: 8px 9px;
+  border-radius: 8px;
+  transition: 0.25s;
+}
+
+nav a:hover {
+  color: white;
+  background: rgba(255,255,255,0.07);
+}
+
+.hamburger {
+  display: none;
+  font-size: 28px;
+  cursor: pointer;
+}
+
+.lang-switch {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.lang-switch img {
+  width: 24px;
+  height: 15px;
+}
 
 .instagram-icon {
   display: flex;
   align-items: center;
   justify-content: center;
-
-  width: 25px;
-  height: 25px;
-
+  width: 27px;
+  height: 27px;
   background: linear-gradient(45deg, #f58529, #dd2a7b, #8134af);
   color: white;
-
   border-radius: 50%;
-  font-size: 20px;
-
-  transition: 0.3s;
+  font-size: 18px;
 }
 
-.instagram-icon:hover {
-  transform: scale(1.1);
-}
+.instagram-icon:hover { transform: scale(1.1); }
 
-/* ===== GLOBAL ===== */
-html {
-    scroll-behavior: smooth;
-}
-
-.section:first-of-type {
-    padding-top: 40px;
-}
-
-/* ===== BACKGROUND IMAGE + OVERLAY ===== */
-body {
-    margin: 0;
-    font-family: 'Inter', sans-serif;
-    color: #ffffff;
-
-    background:
-        linear-gradient(rgba(15, 23, 42, 0.8), rgba(15, 23, 42, 0.8)),
-        url("bgimage.jpeg");
-
-    background-size: cover;
-    background-position: center;
-    background-attachment: fixed;
-}
-
-/* ===== NAVBAR ===== */
-
-header {
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-
-    padding: 22px 60px;
-
-    background: rgba(11, 18, 32, 0.6);
-    backdrop-filter: blur(16px);
-}
-
-/* LEFT LOGO */
-.logo img {
-    height: 52px;
-}
-
-/* CENTER BRAND */
-.nav-brand {
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    text-align: center;
-}
-
-.brand-name {
-    font-size: 20px;      /* 16 → 20 */
-    font-weight: 800;
-    letter-spacing: 2.5px;
-    color: #ffffff;
-}
-
-.brand-tag {
-    font-size: 12.5px;    /* 11 → 12.5 */
-    color: rgba(255,255,255,0.6);
-    letter-spacing: 1.2px;
-}
-
-/* RIGHT MENU */
-nav {
-    display: flex;
-    gap: 28px;
-    align-items: center;
-}
-
-nav a {
-    color: rgba(255,255,255,0.7);
-    text-decoration: none;
-    font-size: 13px;
-    letter-spacing: 0.8px;
-    padding: 8px 10px;
-    border-radius: 8px;
-    transition: 0.25s;
-}
-
-nav a:hover {
-    color: #ffffff;
-    background: rgba(255,255,255,0.06);
-}
-
-/* ===== HERO ===== */
 .hero {
- text-align: center;
-     padding: 50px 20px 80px;
+  max-width: 1120px;
+  margin: 70px auto 80px;
+  padding: 80px 28px;
+  text-align: center;
+}
 
-    background: rgba(255, 255, 255, 0.04);
-    backdrop-filter: blur(10px);
+.hero-content {
+  max-width: 940px;
+  margin: 0 auto;
+  padding: 64px 42px;
+  background: rgba(255,255,255,0.055);
+  border: 1px solid rgba(255,255,255,0.09);
+  border-radius: 30px;
+  backdrop-filter: blur(12px);
+  box-shadow: 0 24px 80px rgba(0,0,0,0.24);
+}
 
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 20px;
-
-    max-width: 900px;
-    margin: 60px auto;
-
+.eyebrow {
+  display: inline-block;
+  margin-bottom: 22px;
+  padding: 9px 16px;
+  border-radius: 999px;
+  background: rgba(44,190,172,0.13);
+  border: 1px solid rgba(44,190,172,0.24);
+  color: #87f1de;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 1px;
 }
 
 .hero h1 {
-    font-size: 56px;
-    margin-bottom: 20px;
-    letter-spacing: -1px;
-   text-shadow: 0 10px 40px rgba(0,0,0,0.5);
+  font-size: clamp(38px, 5.5vw, 66px);
+  line-height: 1.06;
+  margin: 0 0 24px;
+  letter-spacing: -1.8px;
+  text-shadow: 0 12px 42px rgba(0,0,0,0.45);
 }
 
+.hero h1 span {
+  background: linear-gradient(90deg, #7ce6d4, #f5d76e);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
 
 .hero p {
-    font-size: 18px;
-    color: #94a3b8;
-    max-width: 650px;
-    margin: 0 auto 30px;
-    line-height: 1.6;
-	
-	color: rgba(255, 255, 255, 0.85);
-    font-size: 18px;
-    line-height: 1.7;
+  font-size: 18px;
+  color: rgba(255,255,255,0.86);
+  max-width: 700px;
+  margin: 0 auto 30px;
+  line-height: 1.7;
 }
 
+.hero-actions {
+  display: flex;
+  gap: 14px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
 
-
-/* ===== BUTTON ===== */
 .btn {
-    background: linear-gradient(90deg, #d4af37, #f5d76e);
-    color: #0b1220;
-    padding: 14px 32px;
-    border-radius: 10px;
-    font-weight: 600;
-    text-decoration: none;
-    display: inline-block;
-    transition: 0.3s;
+  background: linear-gradient(90deg, #d4af37, #f5d76e);
+  color: #0b1220;
+  padding: 15px 32px;
+  border-radius: 12px;
+  font-weight: 800;
+  text-decoration: none;
+  display: inline-block;
+  border: none;
+  cursor: pointer;
+  transition: 0.3s;
 }
 
 .btn:hover {
-    transform: translateY(-2px);
+  transform: translateY(-2px);
+  box-shadow: 0 14px 34px rgba(212,175,55,0.22);
 }
 
-/* ===== TRUST ===== */
+.btn.secondary {
+  background: rgba(255,255,255,0.07);
+  color: white;
+  border: 1px solid rgba(255,255,255,0.13);
+}
+
 .trust {
-    margin-top: 35px;
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-    flex-wrap: wrap;
-    font-size: 13px;
-    color: #94a3b8;
+  margin-top: 34px;
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  font-size: 13px;
+  color: rgba(255,255,255,0.72);
 }
 
-/* ===== SECTION ===== */
+.trust span {
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.055);
+  border: 1px solid rgba(255,255,255,0.08);
+}
+
 .section {
-    padding: 100px 60px;
-    text-align: center;
-	
-	
+  padding: 90px 60px;
+  text-align: center;
 }
 
 .section-wrapper {
-    max-width: 1100px;
-    margin: 0 auto;
-
-    background: rgba(255, 255, 255, 0.04);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 20px;
-
-    backdrop-filter: blur(10px);
-
-    padding: 60px 40px;
-}
-
-.section h2 {
-    display: inline-block;
-    padding: 10px 22px;
-
-    background: rgba(255, 255, 255, 0.04);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 12px;
-
-    backdrop-filter: blur(8px);
-
-    margin-bottom: 40px;
-
-    font-weight: 600;
-    letter-spacing: 0.5px;
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 60px 40px;
+  background: rgba(255,255,255,0.045);
+  border: 1px solid rgba(255,255,255,0.085);
+  border-radius: 24px;
+  backdrop-filter: blur(12px);
+  transition: 0.3s;
 }
 
 .section-wrapper:hover {
-    transform: translateY(-2px);
-    transition: 0.3s;
-    border-color: rgba(212,175,55,0.2);
+  transform: translateY(-2px);
+  border-color: rgba(212,175,55,0.22);
 }
 
-/* ===== CARDS ===== */
+.section h2 {
+  display: inline-block;
+  padding: 10px 24px;
+  margin: 0 0 42px;
+  background: rgba(255,255,255,0.055);
+  border: 1px solid rgba(255,255,255,0.09);
+  border-radius: 14px;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+}
+
 .cards {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-    flex-wrap: wrap;
+  display: flex;
+  justify-content: center;
+  gap: 22px;
+  flex-wrap: wrap;
 }
 
 .card {
-    background: rgba(18, 26, 43, 0.75);
-    padding: 25px;
-    border-radius: 14px;
-    width: 260px;
-    border: 1px solid rgba(255,255,255,0.05);
-    transition: 0.3s;
-    backdrop-filter: blur(10px);
+  width: 280px;
+  min-height: 185px;
+  padding: 26px;
+  border-radius: 18px;
+  background: rgba(13, 24, 42, 0.76);
+  border: 1px solid rgba(255,255,255,0.08);
+  cursor: pointer;
+  transition: 0.3s;
+  backdrop-filter: blur(10px);
 }
 
 .card:hover {
-    transform: translateY(-6px);
+  transform: translateY(-7px);
+  border-color: rgba(44,190,172,0.26);
+  box-shadow: 0 18px 44px rgba(0,0,0,0.22);
 }
 
-/* ===== FORM ===== */
+.card h3 {
+  margin-top: 0;
+  color: #ffffff;
+}
+
+.card p {
+  color: rgba(255,255,255,0.72);
+  line-height: 1.6;
+}
+
+.card-detail {
+  opacity: 0;
+  visibility: hidden;
+  max-height: 0;
+  overflow: hidden;
+  transform: translateY(10px);
+  transition: all 0.3s ease;
+  font-style: italic;
+}
+
+.card:hover .card-detail,
+.card.active .card-detail {
+  opacity: 1;
+  visibility: visible;
+  max-height: 460px;
+  transform: translateY(0);
+}
+
+.portfolio-img {
+  width: 92%;
+  object-fit: cover;
+  border-radius: 10px;
+  cursor: pointer;
+  margin: 6px;
+  border: 1px solid rgba(255,255,255,0.08);
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.66);
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.modal img {
+  width: 80%;
+  max-width: 850px;
+  max-height: 85vh;
+  background: white;
+  padding: 12px;
+  border-radius: 14px;
+  box-shadow: 0 18px 50px rgba(0,0,0,0.45);
+}
+
+.modal img.small {
+  max-width: 420px;
+  width: 80%;
+  max-height: 72vh;
+}
+
 .contact-form {
-    max-width: 600px;
-    margin: 0 auto;
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
+  max-width: 620px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
 }
 
 .contact-form input,
 .contact-form textarea {
-    padding: 14px;
-    border-radius: 10px;
-    border: 1px solid rgba(255,255,255,0.08);
-    background: rgba(18, 26, 43, 0.8);
-    color: white;
-    outline: none;
+  padding: 15px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.09);
+  background: rgba(13,24,42,0.82);
+  color: white;
+  outline: none;
+  font-family: inherit;
 }
 
-.contact-form button {
-    background: linear-gradient(90deg, #d4af37, #f5d76e);
-    color: #0b1220;
-    padding: 14px;
-    border-radius: 10px;
-    border: none;
-    font-weight: 600;
-    cursor: pointer;
-    transition: 0.3s;
+.contact-form input::placeholder,
+.contact-form textarea::placeholder {
+  color: rgba(255,255,255,0.48);
 }
 
-.contact-form button:hover {
-    transform: translateY(-2px);
-}
-
-/* ===== FOOTER ===== */
-footer {
-    text-align: center;
-    padding: 40px;
-    color: #64748b;
-    font-size: 13px;
-}
-
-/* ===== RESPONSIVE ===== */
-@media (max-width: 768px) {
-
-	
-    .card h1 {
-        font-size: 16px;
-        line-height: 1.3;
-    }
-
-	
-    header {
-        padding: 14px 20px;
-    }
-
-    /* logo küçült */
-    .logo img {
-        height: 40px;
-    }
-
-    /* brand ortadan kalksın (mobilde şart değil) */
-    .nav-brand {
-        display: none;
-    }
-
-    /* nav dikey menü */
-    nav {
-        position: absolute;
-        top: 70px;
-        right: 0;
-
-        flex-direction: column;
-        gap: 10px;
-
-        background: rgba(11,18,32,0.95);
-        padding: 15px;
-        border-radius: 12px;
-
-        display: none; /* JS ile açılacak */
-    }
-
-    nav.active {
-        display: flex;
-    }
-}
 .whatsapp-btn {
-    position: fixed;
-    bottom: 25px;
-    right: 25px;
-
-    display: flex;
-    align-items: center;
-    gap: 10px;
-
-    background: #25D366;
-    color: white;
-
-    padding: 12px 18px;
-    border-radius: 50px;
-
-    font-size: 14px;
-    font-weight: 600;
-
-    text-decoration: none;
-
-    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-
-    z-index: 999;
-    transition: all 0.3s ease;
+  position: fixed;
+  bottom: 25px;
+  right: 25px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #25D366;
+  color: white;
+  padding: 12px 18px;
+  border-radius: 50px;
+  font-size: 14px;
+  font-weight: 700;
+  text-decoration: none;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.32);
+  z-index: 999;
+  transition: 0.3s ease;
 }
 
-/* icon */
 .whatsapp-btn img {
-    width: 22px;
-    height: 22px;
+  width: 22px;
+  height: 22px;
 }
 
-/* hover */
-.whatsapp-btn:hover {
-    transform: translateY(-2px) scale(1.03);
-    box-shadow: 0 15px 40px rgba(0,0,0,0.4);
-}
+.whatsapp-btn:hover { transform: translateY(-2px) scale(1.03); }
 
-.hamburger {
-    display: none;
-    font-size: 26px;
-    color: white;
-    cursor: pointer;
+footer {
+  text-align: center;
+  padding: 44px;
+  color: rgba(255,255,255,0.42);
+  font-size: 13px;
 }
 
 @media (max-width: 768px) {
-    .hamburger {
-        display: block;
-    }
+  header {
+    height: 74px;
+    padding: 12px 18px;
+  }
+
+  .logo img { height: 50px; }
+
+  .nav-brand { display: none; }
+
+  .hamburger { display: block; }
+
+  nav {
+    position: absolute;
+    top: 74px;
+    right: 16px;
+    display: none;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    min-width: 210px;
+    padding: 16px;
+    background: rgba(8,15,28,0.96);
+    border: 1px solid rgba(255,255,255,0.09);
+    border-radius: 16px;
+  }
+
+  nav.active { display: flex; }
+
+  .hero {
+    margin: 35px auto 50px;
+    padding: 54px 18px;
+  }
+
+  .hero-content {
+    padding: 38px 22px;
+    border-radius: 22px;
+  }
+
+  .hero p { font-size: 16px; }
+
+  .section {
+    padding: 58px 18px;
+  }
+
+  .section-wrapper {
+    padding: 42px 20px;
+  }
+
+  .card { width: 100%; }
+
+  .whatsapp-btn span { display: none; }
+
+  .whatsapp-btn { padding: 14px; }
 }
-.lang-switch {
-    margin-left: 15px;
-    font-size: 13px;
-    color: rgba(255,255,255,0.7);
-}
-
-.lang-switch a {
-    color: rgba(255,255,255,0.7);
-    text-decoration: none;
-}
-
-.lang-switch a:hover {
-    color: #ffffff;
-}
-
-.cards {
-    display: flex;
-    gap: 20px;
-}
-
-.card {
-    position: relative;
-    padding: 20px;
-    border: 1px solid #ddd;
-    width: 250px;
-    cursor: pointer;
-}
-
-.card-detail {
-    opacity: 0;
-    visibility: hidden;
-    max-height: 0;
-    overflow: hidden;
-    transform: translateY(10px);
-    transition: all 0.3s ease;
-}
-
-.card:hover .card-detail {
-    opacity: 1;
-    visibility: visible;
-    max-height: 300px;
-    transform: translateY(0);
-}
-
-.card-detail {
-    font-style: italic;
-}
-
-.portfolio-img {
-    width: 90%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 8px;
-	cursor: pointer;
-    margin: 5px;
-}
-
-
-
-/* Arka plan */
-.modal {
-     display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-
-    width: 100%;
-    height: 100%;
-
-    background: rgba(0, 0, 0, 0.5);
-
-    justify-content: center;
-    align-items: center;
-
-    z-index: 9999;
-}
-
-/* Büyük resim */
-.modal img {
-    width: 80%;
-    max-width: 800px;   /* büyütüldü */
-    max-height: 85vh;   /* ekranı aşmasın */
-
-    background: white;
-    padding: 12px;
-    border-radius: 12px;
-
-    box-shadow: 0 15px 40px rgba(0,0,0,0.4);
-}
-
-
-.modal img.small {
-    max-width: 400px;   /* daha küçük */
-    width: 80%;
-    max-height: 70vh;
-}
-
-
 </style>
-
-<script>
-
-
-function toggleCard(card) {
-    card.classList.toggle("active");
-}
-
-
-function toggleMenu() {
-    document.querySelector("nav").classList.toggle("active");
-}
-
-
-
-function openModal(img) {
-    const modal = document.getElementById("modal");
-    const modalImg = document.getElementById("modalImg");
-
-    modal.style.display = "flex";
-    modalImg.src = img.src;
-
-    // class reset
-    modalImg.className = "";
-
-    // eğer küçük resimse class ekle
-    if (img.classList.contains("small-modal")) {
-        modalImg.classList.add("small");
-    }
-}
-
-function closeModal() {
-    document.getElementById("modal").style.display = "none";
-}
-</script>
-
-
 </head>
 
 <body>
-<!-- NAVBAR -->
+
 <header>
+  <a href="#home" class="logo">
+    <img src="logo.png" alt="Drealima Logo">
+  </a>
 
-    <!-- LEFT -->
-    <div class="logo">
-        <img src="logo.png" alt="DREALIMA Logo">
-    </div>
+  <div class="nav-brand">
+    <div class="brand-name">DREALIMA</div>
+    <div class="brand-tag">Beyond Imagination Until Reality</div>
+  </div>
 
-    <!-- CENTER -->
-    <div class="nav-brand">
-        <div class="brand-name">DREALIMA</div>
-        <div class="brand-tag">Digital Growth Systems</div>
-    </div>
-	
-	<div class="hamburger" onclick="toggleMenu()">
-    ☰
-</div>
+  <div class="hamburger" onclick="toggleMenu()">☰</div>
 
-    <!-- RIGHT -->
-   <nav>
+  <nav>
     <a href="#home">Home</a>
     <a href="#services">Services</a>
     <a href="#portfolio">Portfolio</a>
-    <a href="#contactForm">Contact</a>
-	
-	 <div class="lang-switch">
-        <a href="en.html"><img src="en.png" alt="English Flag" style="width:24px;height:15px;">
-</span>󠁧󠁢󠁥󠁮󠁧</a> | 
-        <a href="index.html"><img src="tr.png" alt="English Flag" style="width:24px;height:15px;">
-</span></a> | 
-		 <a href="de.html"><img src="de.png" alt="English Flag" style="width:24px;height:15px;">
-</span></a>
+    <a href="#contact">Contact</a>
+
+    <div class="lang-switch">
+      <a href="en.html"><img src="en.png" alt="English"></a>
+      <a href="index.html"><img src="tr.png" alt="Türkçe"></a>
+      <a href="de.html"><img src="de.png" alt="Deutsch"></a>
     </div>
-	
-	<a href="https://www.instagram.com/drealima_software/" target="_blank" class="instagram-icon">
-  <i class="fa-brands fa-instagram"></i>
-</a>
-</nav>
 
-
-
+    <a href="https://www.instagram.com/drealima_software/" target="_blank" class="instagram-icon">
+      <i class="fa-brands fa-instagram"></i>
+    </a>
+  </nav>
 </header>
 
-<!-- HERO -->
 <section class="hero" id="home">
+  <div class="hero-content">
+    <div class="eyebrow">DIGITAL PRODUCTS • SMART SOLUTIONS</div>
 
-    <h1>We Build Systems That  <br>Grow Your Business</h1>
+    <h1>We Turn Ideas Into <span>Digital Products</span></h1>
 
     <p>
-        Websites, mobile apps, and automation tools designed to bring you more customers and faster results.
+      We build websites, mobile apps, and automation systems that help your business become more visible,
+      faster, and more efficient.
     </p>
 
-    <a href="#contact" class="btn">Email to Start Growing</a>
+    <div class="hero-actions">
+      <a href="#contact" class="btn">Get a Quote</a>
+      <a href="https://wa.me/905422443543?text=Hello%20I%20would%20like%20to%20get%20information%20about%20Drealima."
+         class="btn secondary" target="_blank">Write on WhatsApp</a>
+    </div>
 
     <div class="trust">
-        <span>✔ Websites</span>
-        <span>✔ Mobile Apps</span>
-        <span>✔ Automation</span>
-		<span>✔ Fast Delivery</span>
-		<span>✔ Business Focused</span>
-		<span>✔ Scalable Systems</span>
+      <span>✔ Websites</span>
+      <span>✔ Mobile Apps</span>
+      <span>✔ Automation</span>
+      <span>✔ Digital Products</span>
+      <span>✔ Fast Delivery</span>
+      <span>✔ Scalable Systems</span>
     </div>
-	
-	<p style="margin-top:15px; font-weight:500; color:#d4af37;">
-Increase your customers in 30 days with modern web & mobile systems.
-</p>
 
-<p style="color:#94a3b8; font-size:14px;">
-Starting from $299 for small business websites
-</p>
-
-
-<a href="https://wa.me/905422443543?text=Hello%20I%20want%20more%20information." 
-   class="whatsapp-btn" target="_blank">
-
-    <img src="https://cdn-icons-png.flaticon.com/512/733/733585.png" alt="WhatsApp">
-    <span>Message</span>
-
-</a>
-
-
+    <p style="margin-top:22px; font-weight:600; color:#f5d76e;">
+      Beyond Imagination Until Reality
+    </p>
+  </div>
 </section>
 
-<!-- SERVICES -->
 <section class="section" id="services">
+  <div class="section-wrapper">
+    <h2>Services</h2>
 
-    <div class="section-wrapper">
-
-        <h2>Services</h2>
-
-        <div class="cards">
-		
-           <div class="card"  onclick="toggleCard(this)">
-			<h3>Web Design</h3>
-			<p>Modern business websites.</p>
-
-			<div class="card-detail">
-				<p>We build fast, SEO-friendly, conversion-focused websites tailored for your business.</p>
-			</div>
-		</div>
-
-           <div class="card"  onclick="toggleCard(this)">
-                <h3>Mobile Apps</h3>
-                <p>iOS & Android solutions.</p>
-					<div class="card-detail">
-						<p>Turn your business into a mobile experience that lives in your customers’ pockets, increasing engagement and conversions.</p>
-					</div>
-				
-            </div>
-
-            <div class="card"  onclick="toggleCard(this)">
-                <h3>Automation</h3>
-                <p>CRM & workflow systems.</p>
-					<div class="card-detail">
-						<p>Automate your business operations, manage customers efficiently, and scale faster with custom-built CRM and workflow systems designed for growth.</p>
-					</div>
-            </div>
+    <div class="cards">
+      <div class="card" onclick="toggleCard(this)">
+        <h3>Web Design</h3>
+        <p>Modern, fast, and mobile-friendly business websites.</p>
+        <div class="card-detail">
+          <p>We build SEO-friendly, trustworthy, and conversion-focused websites tailored for your business.</p>
         </div>
+      </div>
 
+      <div class="card" onclick="toggleCard(this)">
+        <h3>Mobile Apps</h3>
+        <p>Digital product solutions for iOS and Android.</p>
+        <div class="card-detail">
+          <p>We turn your business into a mobile experience that reaches your customers directly.</p>
+        </div>
+      </div>
+
+      <div class="card" onclick="toggleCard(this)">
+        <h3>Automation</h3>
+        <p>CRM and business process systems.</p>
+        <div class="card-detail">
+          <p>We build systems that automate processes, save time, and support your growth.</p>
+        </div>
+      </div>
     </div>
-
+  </div>
 </section>
 
-<!-- WHY -->
 <section class="section">
+  <div class="section-wrapper">
+    <h2>Why DREALIMA?</h2>
 
-    <div class="section-wrapper">
-
-        <h2>Why DREALIMA?</h2>
-
-        <div class="cards">
-
-            <div class="card"  onclick="toggleCard(this)">
-                <h3>Business Focused</h3>
-                <p>We build systems that bring real customers, not just websites.</p>
-				
-				<div class="card-detail">
-						<p>Your website should bring customers, not just exist. We build systems focused on real growth, conversions, and business impact.</p>
-				</div>
-            </div>
-
-             <div class="card" onclick="toggleCard(this)" >
-                <h3>Fast Delivery</h3>
-                <p>From idea to live product in days, not months.</p>
-						
-					<div class="card-detail">
-						<p>Speed matters in business. We build and launch your product quickly so you can start getting results while others are still planning.</p>
-					</div>
-				
-            </div>
-
-            <div class="card" onclick="toggleCard(this)" >
-                <h3>Scalable Systems</h3>
-                <p>Built to grow with your business without breaking.</p>
-				
-						<div class="card-detail">
-							<p>Your business is meant to grow. We build systems that scale seamlessly with increasing demand, users, and complexity — without limits.</p>
-						</div>
-						
-
+    <div class="cards">
+      <div class="card" onclick="toggleCard(this)">
+        <h3>Business Focused</h3>
+        <p>Not just software, but systems that create real business value.</p>
+        <div class="card-detail">
+          <p>Our products are designed with visibility, customer acquisition, and operational efficiency in mind.</p>
         </div>
+      </div>
 
+      <div class="card" onclick="toggleCard(this)">
+        <h3>Fast Delivery</h3>
+        <p>From idea to live product — fast and structured.</p>
+        <div class="card-detail">
+          <p>Instead of long processes, we work with clear planning, clean scope, and fast execution.</p>
+        </div>
+      </div>
+
+      <div class="card" onclick="toggleCard(this)">
+        <h3>Scalable Systems</h3>
+        <p>Structures that grow with your business.</p>
+        <div class="card-detail">
+          <p>We design systems that can reliably handle increasing users, operations, and requirements.</p>
+        </div>
+      </div>
     </div>
-
+  </div>
 </section>
 
-<!-- PORTFOLIO -->
-<section class="section"id="portfolio">
-
-    <div class="section-wrapper">
+<section class="section" id="portfolio">
+  <div class="section-wrapper">
     <h2>Portfolio</h2>
 
     <div class="cards">
-        <div class="card"  onclick="toggleCard(this)" >
-            <h3>Live Gold & Currency Tracker</h3>
-				<p>Real-time gold prices and currency rates dashboard built for jewelry businesses.</p>
-				<div class="card-detail">
-				<div class="portfolio">
-					<img src="kuyum.png" onclick="openModal(this)" class="portfolio-img">
-					<img src="kuyum2.png" onclick="openModal(this)" class="portfolio-img">
-				</div>
+      <div class="card" onclick="toggleCard(this)">
+        <h3>Live Gold & Currency Tracker</h3>
+        <p>Real-time dashboard for gold prices and exchange rates, built for jewelry businesses.</p>
+        <div class="card-detail">
+          <img src="kuyum.png" onclick="openModal(this); event.stopPropagation();" class="portfolio-img" alt="Gold Dashboard">
+          <img src="kuyum2.png" onclick="openModal(this); event.stopPropagation();" class="portfolio-img" alt="Currency Dashboard">
         </div>
-	</div>
+      </div>
 
-           <div class="card"  onclick="toggleCard(this)">
-            <h3>Barcode-Based Inventory Tracking System for Jewelers</h3>
-				<p>It allows you to instantly monitor your stock levels for all your barcoded products, no matter where you are.</p>
-				<div class="card-detail">
-						<div class="portfolio">
-						<img src="barkod.jpeg" onclick="openModal(this)" class="portfolio-img small-modal">
-					</div>
-			 
-				</div>
-		  </div>
-		   <div class="card"  onclick="toggleCard(this)">
-            <h3>BodyCare Mobile App</h3>
-				<p>BodyCare helps you stay consistent with a simple daily workout plan. No thinking, no confusion — just follow and improve every day.</p>
-				<div class="card-detail">
-						<div class="portfolio">
-						<img src="bodyCare1.png" onclick="openModal(this)" class="portfolio-img small-modal">,
-						<img src="bodyCare2.png" onclick="openModal(this)" class="portfolio-img small-modal">
-					</div>
-			 
-				</div>
-		  </div>
-		</div>
-	 </div>
+      <div class="card" onclick="toggleCard(this)">
+        <h3>Barcode Inventory Tracking System</h3>
+        <p>Monitor barcoded products and inventory levels easily and quickly.</p>
+        <div class="card-detail">
+          <img src="Barkod.jpeg" onclick="openModal(this); event.stopPropagation();" class="portfolio-img small-modal" alt="Barcode System">
+        </div>
+      </div>
+
+      <div class="card" onclick="toggleCard(this)">
+        <h3>BodyCare Mobile App</h3>
+        <p>A daily workout plan and a simple tracking system.</p>
+        <div class="card-detail">
+          <img src="bodyCare1.png" onclick="openModal(this); event.stopPropagation();" class="portfolio-img small-modal" alt="BodyCare App 1">
+          <img src="bodyCare2.png" onclick="openModal(this); event.stopPropagation();" class="portfolio-img small-modal" alt="BodyCare App 2">
+        </div>
+      </div>
+    </div>
+  </div>
 </section>
 
-<!-- MODAL -->
 <div id="modal" class="modal" onclick="closeModal()">
-    <img id="modalImg">
+  <img id="modalImg" alt="Portfolio Preview">
 </div>
 
-<!-- CONTACT -->
 <section class="section" id="contact">
-
-    <div class="section-wrapper">
-
+  <div class="section-wrapper">
     <h2>Start Your Project</h2>
 
     <form class="contact-form" id="contactForm">
-
-        <input type="text" name="name" placeholder="Your Name" required>
-        <input type="email" name="email" placeholder="Your Email" required>
-        <input type="text" name="project" placeholder="Project Type" required>
-        <textarea name="message" rows="5" placeholder="Tell us about your project..." required></textarea>
-
-        <button type="submit">Send Request</button>
-
+      <input type="text" name="name" placeholder="Your Name" required>
+      <input type="email" name="email" placeholder="Your Email" required>
+      <input type="text" name="project_type" placeholder="Project Type" required>
+      <textarea rows="5" name="message" placeholder="Tell us about your project..." required></textarea>
+      <button type="submit" class="btn">Send Request</button>
     </form>
- </div>
+  </div>
 </section>
 
-<!-- FOOTER -->
+<a href="https://wa.me/905422443543?text=Hello%20I%20would%20like%20to%20get%20information%20about%20Drealima."
+   class="whatsapp-btn" target="_blank">
+  <img src="https://cdn-icons-png.flaticon.com/512/733/733585.png" alt="WhatsApp">
+  <span>Message</span>
+</a>
+
 <footer>
-    © 2026 DREALIMA. All rights reserved.
+  © 2026 DREALIMA. All rights reserved.
 </footer>
 
+<script>
+function toggleCard(card) {
+  card.classList.toggle("active");
+}
 
+function toggleMenu() {
+  document.querySelector("nav").classList.toggle("active");
+}
 
-<!-- EMAILJS -->
+function openModal(img) {
+  const modal = document.getElementById("modal");
+  const modalImg = document.getElementById("modalImg");
+
+  modal.style.display = "flex";
+  modalImg.src = img.src;
+  modalImg.className = "";
+
+  if (img.classList.contains("small-modal")) {
+    modalImg.classList.add("small");
+  }
+}
+
+function closeModal() {
+  document.getElementById("modal").style.display = "none";
+}
+</script>
+
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 
 <script>
 (function(){
-    emailjs.init("X3IaFp_DgslGbNzF3");
+  emailjs.init("X3IaFp_DgslGbNzF3");
 })();
 
 document.getElementById("contactForm").addEventListener("submit", function(e){
-    e.preventDefault();
+  e.preventDefault();
 
-    const form = this;
-    const button = form.querySelector("button");
+  const form = this;
+  const button = form.querySelector("button");
 
-    button.innerText = "Sending...";
-    button.disabled = true;
+  button.innerText = "Sending...";
+  button.disabled = true;
 
-    emailjs.sendForm(
-        "service_b9nd7il",
-        "template_bo38nmv",
-        form
-    ).then(function(){
-
-        alert("Message sent successfully!");
-        form.reset();
-
-        button.innerText = "Send Request";
-        button.disabled = false;
-
-    }, function(error){
-
-        alert("Failed to send message.");
-        console.log(error);
-
-        button.innerText = "Send Request";
-        button.disabled = false;
-
-    });
-
+  emailjs.sendForm(
+    "service_b9nd7il",
+    "template_bo38nmv",
+    form
+  ).then(function(){
+    alert("Message sent successfully!");
+    form.reset();
+    button.innerText = "Send Request";
+    button.disabled = false;
+  }, function(error){
+    alert("Failed to send message.");
+    console.log(error);
+    button.innerText = "Send Request";
+    button.disabled = false;
+  });
 });
 </script>
 
