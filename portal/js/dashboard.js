@@ -222,19 +222,25 @@ function renderProject() {
 
 function listenToWorkLogs() {
     const workLogsQuery = query(
-        collection(db, "workLogs"),
+    collection(db, "workLogs"),
 
-        where(
-            "projectId",
-            "==",
-            currentProject.id
-        ),
+    where(
+        "projectId",
+        "==",
+        currentProject.id
+    ),
 
-        orderBy(
-            "workDate",
-            "desc"
-        )
-    );
+    where(
+        "clientId",
+        "==",
+        currentProfile.clientId
+    ),
+
+    orderBy(
+        "workDate",
+        "desc"
+    )
+);
 
     unsubscribeLogs = onSnapshot(
         workLogsQuery,
