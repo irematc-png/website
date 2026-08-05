@@ -341,8 +341,11 @@ async function initializeCustomerDashboard(
     };
 
     renderProfile(user);
-    renderProject();
-    listenToWorkLogs();
+renderProject();
+
+initializeCurrentMonthFilter();
+
+listenToWorkLogs();
 
     document.body.classList.remove(
         "auth-loading"
@@ -999,4 +1002,22 @@ function escapeHtml(value) {
         String(value ?? "");
 
     return element.innerHTML;
+}
+function initializeCurrentMonthFilter() {
+
+    const today = new Date();
+
+    const year = today.getFullYear();
+    const month = today.getMonth();
+
+    const firstDay = new Date(year, month, 1);
+    const lastDay = new Date(year, month + 1, 0);
+
+    startDateFilter.value = firstDay
+        .toISOString()
+        .split("T")[0];
+
+    endDateFilter.value = lastDay
+        .toISOString()
+        .split("T")[0];
 }
