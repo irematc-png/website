@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="robots"
+        content="noindex, nofollow"
+    >
+
+    <title>Proje Takibi | Drealima</title>
+
+    <link
+        rel="stylesheet"
+        href="./css/portal.css"
+    >
+</head>
+
+<body class="portal-page auth-loading">
+
+    <header class="portal-header">
+
+        <a
+            href="/"
+            class="portal-logo"
+        >
+            <span class="logo-symbol small">D</span>
+
+            <span class="logo-text">
+                <strong>Drealima</strong>
+                <small>Project Portal</small>
+            </span>
+        </a>
+
+        <div class="header-user">
+
+            <div class="header-user-information">
+                <strong id="userName">
+                    Kullanıcı
+                </strong>
+
+                <small id="userEmail">
+                    —
+                </small>
+            </div>
+
+            <button
+                id="logoutButton"
+                class="secondary-button"
+                type="button"
+            >
+                Çıkış Yap
+            </button>
+
+        </div>
+
+    </header>
+
+    <main class="portal-container">
+
+        <section class="project-heading">
+
+            <div>
+                <span class="section-label">
+                    PROJE TAKİBİ
+                </span>
+
+                <h1 id="projectName">
+                    Proje bilgileri yükleniyor...
+                </h1>
+
+                <p id="clientName">
+                    —
+                </p>
+            </div>
+
+            <span
+                id="projectStatus"
+                class="status-pill active"
+            >
+                Aktif
+            </span>
+
+        </section>
+
+        <section class="summary-grid">
+
+            <article class="summary-card">
+                <span>Tanımlanan Süre</span>
+
+                <div>
+                    <strong id="totalHours">0</strong>
+                    <small>saat</small>
+                </div>
+            </article>
+
+            <article class="summary-card">
+                <span>Kullanılan Süre</span>
+
+                <div>
+                    <strong id="usedHours">0</strong>
+                    <small>saat</small>
+                </div>
+            </article>
+
+            <article class="summary-card">
+                <span>Kalan Süre</span>
+
+                <div>
+                    <strong id="remainingHours">0</strong>
+                    <small>saat</small>
+                </div>
+            </article>
+
+            <article class="summary-card">
+                <span>Çalışma Kaydı</span>
+
+                <div>
+                    <strong id="logCount">0</strong>
+                    <small>kayıt</small>
+                </div>
+            </article>
+
+        </section>
+
+        <section class="content-card">
+
+            <div class="content-heading">
+                <div>
+                    <h2>Süre Kullanımı</h2>
+
+                    <p>
+                        Tanımlanan toplam proje süresinin
+                        kullanım oranı.
+                    </p>
+                </div>
+
+                <strong id="progressPercentage">
+                    %0
+                </strong>
+            </div>
+
+            <div class="progress-track">
+                <div
+                    id="progressBar"
+                    class="progress-bar"
+                ></div>
+            </div>
+
+        </section>
+
+        <section class="content-card">
+
+            <div class="content-heading">
+                <div>
+                    <h2>Günlük Çalışma Logları</h2>
+
+                    <p>
+                        Proje kapsamında gerçekleştirilen
+                        güncel çalışmalar.
+                    </p>
+                </div>
+            </div>
+
+            <div
+                id="loadingState"
+                class="empty-state"
+            >
+                Çalışma kayıtları yükleniyor...
+            </div>
+
+            <div
+                id="emptyState"
+                class="empty-state hidden"
+            >
+                Henüz çalışma kaydı bulunmuyor.
+            </div>
+
+            <div
+                id="logsContainer"
+                class="logs-container"
+            ></div>
+
+        </section>
+
+    </main>
+
+    <script
+        type="module"
+        src="./js/dashboard.js"
+    ></script>
+
+</body>
+</html>

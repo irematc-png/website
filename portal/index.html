@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="robots"
+        content="noindex, nofollow"
+    >
+
+    <title>Müşteri Girişi | Drealima</title>
+
+    <link
+        rel="stylesheet"
+        href="./css/portal.css"
+    >
+</head>
+
+<body class="login-page">
+
+    <main class="login-layout">
+
+        <section class="login-introduction">
+
+            <a
+                href="/"
+                class="portal-logo"
+                aria-label="Drealima ana sayfasına dön"
+            >
+                <span class="logo-symbol">D</span>
+
+                <span class="logo-text">
+                    <strong>Drealima</strong>
+                    <small>Project Portal</small>
+                </span>
+            </a>
+
+            <div class="introduction-content">
+                <span class="section-label">
+                    MÜŞTERİ PORTALI
+                </span>
+
+                <h1>
+                    Projenizi şeffaf şekilde takip edin.
+                </h1>
+
+                <p>
+                    Gerçekleştirilen çalışmaları, kullanılan süreyi
+                    ve kalan proje saatlerini tek ekrandan görüntüleyin.
+                </p>
+            </div>
+
+        </section>
+
+        <section class="login-panel">
+
+            <div class="login-card">
+
+                <div class="card-heading">
+                    <span class="section-label">
+                        GÜVENLİ GİRİŞ
+                    </span>
+
+                    <h2>Hesabınıza giriş yapın</h2>
+
+                    <p>
+                        Size tanımlanan e-posta adresi ve şifreyi kullanın.
+                    </p>
+                </div>
+
+                <form id="loginForm">
+
+                    <div class="form-group">
+                        <label for="email">
+                            E-posta adresi
+                        </label>
+
+                        <input
+                            id="email"
+                            name="email"
+                            type="email"
+                            autocomplete="email"
+                            placeholder="ornek@firma.com"
+                            required
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">
+                            Şifre
+                        </label>
+
+                        <input
+                            id="password"
+                            name="password"
+                            type="password"
+                            autocomplete="current-password"
+                            placeholder="Şifrenizi girin"
+                            minlength="6"
+                            required
+                        >
+                    </div>
+
+                    <button
+                        id="loginButton"
+                        class="primary-button full-width"
+                        type="submit"
+                    >
+                        Giriş Yap
+                    </button>
+
+                    <p
+                        id="loginMessage"
+                        class="form-message"
+                        aria-live="polite"
+                    ></p>
+
+                </form>
+
+                <a
+                    class="back-link"
+                    href="/"
+                >
+                    ← Drealima ana sayfasına dön
+                </a>
+
+            </div>
+
+        </section>
+
+    </main>
+
+    <script
+        type="module"
+        src="./js/login.js"
+    ></script>
+
+</body>
+</html>
