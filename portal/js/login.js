@@ -189,3 +189,46 @@ function getLoginErrorMessage(errorCode) {
     return messages[errorCode] ??
         "Giriş sırasında beklenmeyen bir hata oluştu.";
 }
+const togglePasswordButton =
+    document.getElementById("togglePasswordButton");
+
+if (togglePasswordButton) {
+    togglePasswordButton.addEventListener(
+        "click",
+        () => {
+            const isPasswordVisible =
+                passwordInput.type === "text";
+
+            passwordInput.type =
+                isPasswordVisible
+                    ? "password"
+                    : "text";
+
+            togglePasswordButton.textContent =
+                isPasswordVisible
+                    ? "Göster"
+                    : "Gizle";
+
+            togglePasswordButton.setAttribute(
+                "aria-label",
+                isPasswordVisible
+                    ? "Şifreyi göster"
+                    : "Şifreyi gizle"
+            );
+        }
+    );
+}
+const forgotPasswordButton =
+    document.getElementById("forgotPasswordButton");
+
+if (forgotPasswordButton) {
+    forgotPasswordButton.addEventListener(
+        "click",
+        () => {
+            showMessage(
+                "Şifre sıfırlama özelliği kısa süre içinde aktif olacaktır.",
+                "error"
+            );
+        }
+    );
+}
