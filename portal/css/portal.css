@@ -1301,3 +1301,381 @@ a {
         align-items: flex-start;
     }
 }
+/* =====================================================
+   LOGIN LOGO VE SCROLLSUZ EKRAN DÜZENİ
+===================================================== */
+
+html,
+body.login-page {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+body.login-page {
+    min-height: 100vh;
+    min-height: 100svh;
+}
+
+/* LOGO */
+
+body.login-page .logo-image-wrapper {
+    width: 58px;
+    height: 58px;
+    flex: 0 0 58px;
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+    padding: 4px;
+    border-radius: 17px;
+    background: #ffffff;
+    box-shadow:
+        0 8px 24px rgba(0, 0, 0, 0.14);
+}
+
+body.login-page .logo-image-wrapper.small {
+    width: 44px;
+    height: 44px;
+    flex-basis: 44px;
+    border-radius: 13px;
+}
+
+body.login-page .portal-logo-image {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: contain;
+    border-radius: 12px;
+}
+
+/* SAYFAYI EKRAN YÜKSEKLİĞİNE SABİTLE */
+
+body.login-page .login-layout {
+    height: 100vh;
+    height: 100svh;
+    min-height: 0;
+    overflow: hidden;
+}
+
+body.login-page .login-showcase,
+body.login-page .login-panel,
+body.login-page .showcase-content {
+    height: 100vh;
+    height: 100svh;
+    min-height: 0;
+    overflow: hidden;
+}
+
+/* SOL PANELİ DAHA KOMPAKT HALE GETİR */
+
+body.login-page .showcase-content {
+    padding:
+        clamp(24px, 3.4vh, 38px)
+        clamp(34px, 5vw, 76px);
+}
+
+body.login-page .showcase-main {
+    max-width: 680px;
+    margin: auto 0;
+    padding: clamp(22px, 4vh, 48px) 0;
+}
+
+body.login-page .showcase-main h1 {
+    margin:
+        clamp(12px, 2vh, 20px)
+        0
+        clamp(12px, 2.2vh, 20px);
+
+    font-size:
+        clamp(
+            38px,
+            min(4.7vw, 7vh),
+            68px
+        );
+
+    line-height: 1.02;
+    letter-spacing: -2.5px;
+}
+
+body.login-page .showcase-main > p {
+    max-width: 600px;
+    font-size: clamp(14px, 1.6vw, 17px);
+    line-height: 1.55;
+}
+
+body.login-page .feature-list {
+    gap: 11px;
+    margin-top: clamp(20px, 3.5vh, 36px);
+}
+
+body.login-page .feature-item {
+    min-height: 126px;
+    padding: 16px;
+}
+
+body.login-page .feature-icon {
+    width: 27px;
+    height: 27px;
+    margin-bottom: 13px;
+}
+
+body.login-page .feature-item strong {
+    margin-bottom: 5px;
+    font-size: 13px;
+}
+
+body.login-page .feature-item small {
+    font-size: 11px;
+    line-height: 1.45;
+}
+
+/* SAĞ GİRİŞ PANELİNİ KOMPAKT HALE GETİR */
+
+body.login-page .login-panel {
+    padding:
+        clamp(20px, 4vh, 42px)
+        clamp(24px, 4.5vw, 70px);
+}
+
+body.login-page .login-card {
+    width: min(100%, 470px);
+    max-height: calc(100svh - 86px);
+    overflow: hidden;
+    padding:
+        clamp(25px, 3.5vh, 38px)
+        clamp(24px, 3.2vw, 38px);
+}
+
+body.login-page .login-card-heading {
+    margin-bottom: clamp(19px, 2.8vh, 28px);
+}
+
+body.login-page .login-card-heading h2 {
+    margin: 8px 0;
+    font-size: clamp(25px, 2.4vw, 30px);
+}
+
+body.login-page .login-card-heading p {
+    line-height: 1.55;
+}
+
+body.login-page .form-group {
+    margin-bottom: clamp(13px, 2vh, 18px);
+}
+
+body.login-page .input-container input {
+    min-height: 48px;
+}
+
+body.login-page .login-button {
+    min-height: 48px;
+}
+
+body.login-page .login-security-note {
+    margin-top: clamp(15px, 2.3vh, 22px);
+    padding: 11px 13px;
+}
+
+body.login-page .login-footer {
+    margin-top: clamp(15px, 2.2vh, 22px);
+    padding-top: clamp(13px, 2vh, 19px);
+}
+
+body.login-page .back-to-site {
+    margin-top: clamp(13px, 2.2vh, 21px);
+}
+
+/* ORTA BOY EKRANLAR */
+
+@media (max-height: 780px) and (min-width: 821px) {
+    body.login-page .secure-badge {
+        padding: 7px 11px;
+    }
+
+    body.login-page .showcase-main h1 {
+        font-size: clamp(36px, 5.8vh, 55px);
+    }
+
+    body.login-page .feature-item {
+        min-height: 105px;
+        padding: 13px;
+    }
+
+    body.login-page .feature-icon {
+        margin-bottom: 9px;
+    }
+
+    body.login-page .login-card {
+        padding: 25px 30px;
+    }
+
+    body.login-page .login-security-note {
+        margin-top: 13px;
+    }
+
+    body.login-page .login-footer {
+        margin-top: 13px;
+        padding-top: 13px;
+    }
+}
+
+/* ÇOK KISA MASAÜSTÜ EKRANLAR */
+
+@media (max-height: 680px) and (min-width: 821px) {
+    body.login-page .showcase-main {
+        padding: 12px 0;
+    }
+
+    body.login-page .showcase-main h1 {
+        margin: 10px 0;
+        font-size: 42px;
+    }
+
+    body.login-page .showcase-main > p {
+        font-size: 14px;
+    }
+
+    body.login-page .feature-list {
+        margin-top: 17px;
+    }
+
+    body.login-page .feature-item {
+        min-height: 90px;
+    }
+
+    body.login-page .feature-item small {
+        display: none;
+    }
+
+    body.login-page .showcase-footer {
+        font-size: 11px;
+    }
+
+    body.login-page .login-card-heading p,
+    body.login-page .login-security-note {
+        display: none;
+    }
+
+    body.login-page .login-card-heading {
+        margin-bottom: 16px;
+    }
+
+    body.login-page .login-footer {
+        margin-top: 11px;
+        padding-top: 11px;
+    }
+}
+
+/* MOBİL — SCROLLSUZ TEK EKRAN */
+
+@media (max-width: 820px) {
+    html,
+    body.login-page {
+        height: 100%;
+        overflow: hidden;
+    }
+
+    body.login-page .login-layout,
+    body.login-page .login-panel {
+        height: 100vh;
+        height: 100svh;
+        min-height: 0;
+        overflow: hidden;
+    }
+
+    body.login-page .login-panel {
+        justify-content: center;
+        padding: 18px 16px;
+    }
+
+    body.login-page .mobile-logo {
+        width: min(100%, 470px);
+        display: block;
+        margin-bottom: clamp(15px, 3vh, 25px);
+    }
+
+    body.login-page .login-card {
+        width: min(100%, 470px);
+        max-height: calc(100svh - 110px);
+        padding:
+            clamp(21px, 3.5vh, 31px)
+            clamp(18px, 5vw, 28px);
+    }
+
+    body.login-page .back-to-site {
+        display: none;
+    }
+}
+
+/* KISA MOBİL EKRANLAR */
+
+@media (max-width: 820px) and (max-height: 720px) {
+    body.login-page .mobile-logo {
+        margin-bottom: 12px;
+    }
+
+    body.login-page .login-card {
+        padding: 20px 18px;
+    }
+
+    body.login-page .login-card-heading {
+        margin-bottom: 15px;
+    }
+
+    body.login-page .login-card-heading h2 {
+        font-size: 24px;
+    }
+
+    body.login-page .login-card-heading p {
+        display: none;
+    }
+
+    body.login-page .form-group {
+        margin-bottom: 12px;
+    }
+
+    body.login-page .input-container input {
+        min-height: 45px;
+    }
+
+    body.login-page .login-button {
+        min-height: 45px;
+    }
+
+    body.login-page .login-security-note {
+        display: none;
+    }
+
+    body.login-page .login-footer {
+        margin-top: 12px;
+        padding-top: 12px;
+    }
+}
+
+@media (max-width: 420px) and (max-height: 650px) {
+    body.login-page .mobile-logo {
+        margin-bottom: 8px;
+    }
+
+    body.login-page .logo-image-wrapper.small {
+        width: 39px;
+        height: 39px;
+        flex-basis: 39px;
+    }
+
+    body.login-page .logo-text strong {
+        font-size: 15px;
+    }
+
+    body.login-page .logo-text small {
+        font-size: 10px;
+    }
+
+    body.login-page .login-card {
+        padding: 16px;
+    }
+
+    body.login-page .login-footer {
+        display: none;
+    }
+}
