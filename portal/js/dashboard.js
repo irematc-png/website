@@ -53,7 +53,9 @@ const logCountElement =
     document.getElementById("logCount");
 
 const progressPercentageElement =
-    document.getElementById("progressPercentage");
+    document.getElementById(
+        "progressPercentage"
+    );
 
 const progressBarElement =
     document.getElementById("progressBar");
@@ -88,23 +90,40 @@ const clearFilterButton =
 const filterSummary =
     document.getElementById("filterSummary");
 
+const quickFilterButtons =
+    document.querySelectorAll(
+        ".quick-filter-button"
+    );
+
 const paginationContainer =
-    document.getElementById("paginationContainer");
+    document.getElementById(
+        "paginationContainer"
+    );
 
 const paginationSummary =
-    document.getElementById("paginationSummary");
+    document.getElementById(
+        "paginationSummary"
+    );
 
 const firstPageButton =
-    document.getElementById("firstPageButton");
+    document.getElementById(
+        "firstPageButton"
+    );
 
 const previousPageButton =
-    document.getElementById("previousPageButton");
+    document.getElementById(
+        "previousPageButton"
+    );
 
 const nextPageButton =
-    document.getElementById("nextPageButton");
+    document.getElementById(
+        "nextPageButton"
+    );
 
 const lastPageButton =
-    document.getElementById("lastPageButton");
+    document.getElementById(
+        "lastPageButton"
+    );
 
 const pageNumbers =
     document.getElementById("pageNumbers");
@@ -127,25 +146,36 @@ let pageSize = 10;
    AUTH
 ===================================================== */
 
-onAuthStateChanged(auth, async (user) => {
-    if (!user) {
-        window.location.replace("./index.html");
-        return;
-    }
+onAuthStateChanged(
+    auth,
+    async (user) => {
+        if (!user) {
+            window.location.replace(
+                "./index.html"
+            );
 
-    try {
-        await initializeCustomerDashboard(user);
-    } catch (error) {
-        console.error(
-            "Dashboard yüklenemedi:",
-            error
-        );
+            return;
+        }
 
-        loadingState.classList.remove("hidden");
-        loadingState.textContent =
-            "Proje bilgileri yüklenemedi.";
+        try {
+            await initializeCustomerDashboard(
+                user
+            );
+        } catch (error) {
+            console.error(
+                "Dashboard yüklenemedi:",
+                error
+            );
+
+            loadingState.classList.remove(
+                "hidden"
+            );
+
+            loadingState.textContent =
+                "Proje bilgileri yüklenemedi.";
+        }
     }
-});
+);
 
 logoutButton.addEventListener(
     "click",
@@ -156,7 +186,10 @@ logoutButton.addEventListener(
             }
 
             await signOut(auth);
-            window.location.replace("./index.html");
+
+            window.location.replace(
+                "./index.html"
+            );
         } catch (error) {
             console.error(
                 "Çıkış işlemi başarısız:",
@@ -173,7 +206,10 @@ logoutButton.addEventListener(
 applyFilterButton.addEventListener(
     "click",
     () => {
+        setActiveQuickFilter("");
+
         currentPage = 1;
+
         applyFilters();
     }
 );
@@ -184,7 +220,10 @@ clearFilterButton.addEventListener(
         startDateFilter.value = "";
         endDateFilter.value = "";
 
+        setActiveQuickFilter("all");
+
         currentPage = 1;
+
         applyFilters();
     }
 );
@@ -193,30 +232,73 @@ pageSizeSelect.addEventListener(
     "change",
     () => {
         pageSize =
-            Number(pageSizeSelect.value) || 10;
+            Number(
+                pageSizeSelect.value
+            ) || 10;
 
         currentPage = 1;
+
         renderTable();
+    }
+);
+
+startDateFilter.addEventListener(
+    "change",
+    () => {
+        setActiveQuickFilter("");
+    }
+);
+
+endDateFilter.addEventListener(
+    "change",
+    () => {
+        setActiveQuickFilter("");
     }
 );
 
 startDateFilter.addEventListener(
     "keydown",
     (event) => {
-        if (event.key === "Enter") {
-            currentPage = 1;
-            applyFilters();
+        if (event.key !== "Enter") {
+            return;
         }
+
+        setActiveQuickFilter("");
+
+        currentPage = 1;
+
+        applyFilters();
     }
 );
 
 endDateFilter.addEventListener(
     "keydown",
     (event) => {
-        if (event.key === "Enter") {
-            currentPage = 1;
-            applyFilters();
+        if (event.key !== "Enter") {
+            return;
         }
+
+        setActiveQuickFilter("");
+
+        currentPage = 1;
+
+        applyFilters();
+    }
+);
+
+quickFilterButtons.forEach(
+    (button) => {
+        button.addEventListener(
+            "click",
+            () => {
+                const filterType =
+                    button.dataset.filter;
+
+                applyQuickFilter(
+                    filterType
+                );
+            }
+        );
     }
 );
 
@@ -232,6 +314,7 @@ firstPageButton.addEventListener(
         }
 
         currentPage = 1;
+
         renderTable();
     }
 );
@@ -244,6 +327,7 @@ previousPageButton.addEventListener(
         }
 
         currentPage -= 1;
+
         renderTable();
     }
 );
@@ -254,11 +338,14 @@ nextPageButton.addEventListener(
         const totalPages =
             getTotalPages();
 
-        if (currentPage >= totalPages) {
+        if (
+            currentPage >= totalPages
+        ) {
             return;
         }
 
         currentPage += 1;
+
         renderTable();
     }
 );
@@ -269,11 +356,14 @@ lastPageButton.addEventListener(
         const totalPages =
             getTotalPages();
 
-        if (currentPage === totalPages) {
+        if (
+            currentPage === totalPages
+        ) {
             return;
         }
 
         currentPage = totalPages;
+
         renderTable();
     }
 );
@@ -292,7 +382,9 @@ async function initializeCustomerDashboard(
     );
 
     const profileSnapshot =
-        await getDoc(profileReference);
+        await getDoc(
+            profileReference
+        );
 
     if (!profileSnapshot.exists()) {
         throw new Error(
@@ -307,10 +399,15 @@ async function initializeCustomerDashboard(
 
     if (
         currentProfile.active !== true ||
-        currentProfile.role !== "customer"
+        currentProfile.role !==
+            "customer"
     ) {
         await signOut(auth);
-        window.location.replace("./index.html");
+
+        window.location.replace(
+            "./index.html"
+        );
+
         return;
     }
 
@@ -327,7 +424,9 @@ async function initializeCustomerDashboard(
     );
 
     const projectSnapshot =
-        await getDoc(projectReference);
+        await getDoc(
+            projectReference
+        );
 
     if (!projectSnapshot.exists()) {
         throw new Error(
@@ -341,15 +440,29 @@ async function initializeCustomerDashboard(
     };
 
     renderProfile(user);
-renderProject();
+    renderProject();
 
-initializeCurrentMonthFilter();
+    initializeDefaultFilters();
 
-listenToWorkLogs();
+    listenToWorkLogs();
 
     document.body.classList.remove(
         "auth-loading"
     );
+}
+
+function initializeDefaultFilters() {
+    startDateFilter.value = "";
+    endDateFilter.value = "";
+
+    pageSize =
+        Number(
+            pageSizeSelect.value
+        ) || 10;
+
+    currentPage = 1;
+
+    setActiveQuickFilter("all");
 }
 
 function renderProfile(user) {
@@ -373,7 +486,8 @@ function renderProject() {
         "";
 
     const isActive =
-        currentProject.status === "active";
+        currentProject.status ===
+        "active";
 
     projectStatusElement.textContent =
         isActive
@@ -399,7 +513,10 @@ function renderProject() {
 
 function listenToWorkLogs() {
     const workLogsQuery = query(
-        collection(db, "workLogs"),
+        collection(
+            db,
+            "workLogs"
+        ),
 
         where(
             "projectId",
@@ -417,12 +534,17 @@ function listenToWorkLogs() {
         workLogsQuery,
 
         (snapshot) => {
-            allLogs = snapshot.docs.map(
-                (documentSnapshot) => ({
-                    id: documentSnapshot.id,
-                    ...documentSnapshot.data()
-                })
-            );
+            allLogs =
+                snapshot.docs.map(
+                    (
+                        documentSnapshot
+                    ) => ({
+                        id:
+                            documentSnapshot.id,
+
+                        ...documentSnapshot.data()
+                    })
+                );
 
             loadingState.classList.add(
                 "hidden"
@@ -431,6 +553,7 @@ function listenToWorkLogs() {
             renderSummary(allLogs);
 
             currentPage = 1;
+
             applyFilters();
         },
 
@@ -462,13 +585,16 @@ function renderSummary(logs) {
         logs.reduce(
             (total, log) =>
                 total +
-                getLogDurationMinutes(log),
+                getLogDurationMinutes(
+                    log
+                ),
             0
         );
 
     const remainingMinutes =
         Math.max(
-            totalMinutes - usedMinutes,
+            totalMinutes -
+                usedMinutes,
             0
         );
 
@@ -484,13 +610,19 @@ function renderSummary(logs) {
             : 0;
 
     totalHoursElement.textContent =
-        formatDuration(totalMinutes);
+        formatDuration(
+            totalMinutes
+        );
 
     usedHoursElement.textContent =
-        formatDuration(usedMinutes);
+        formatDuration(
+            usedMinutes
+        );
 
     remainingHoursElement.textContent =
-        formatDuration(remainingMinutes);
+        formatDuration(
+            remainingMinutes
+        );
 
     logCountElement.textContent =
         String(logs.length);
@@ -500,6 +632,191 @@ function renderSummary(logs) {
 
     progressBarElement.style.width =
         `${percentage}%`;
+}
+
+/* =====================================================
+   QUICK FILTERS
+===================================================== */
+
+function applyQuickFilter(
+    filterType
+) {
+    const today = new Date();
+
+    let startDate = "";
+    let endDate = "";
+
+    switch (filterType) {
+        case "today": {
+            const todayValue =
+                formatDateForInput(
+                    today
+                );
+
+            startDate = todayValue;
+            endDate = todayValue;
+
+            break;
+        }
+
+        case "thisWeek": {
+            const firstDayOfWeek =
+                getFirstDayOfWeek(
+                    today
+                );
+
+            const lastDayOfWeek =
+                new Date(
+                    firstDayOfWeek
+                );
+
+            lastDayOfWeek.setDate(
+                firstDayOfWeek.getDate() +
+                    6
+            );
+
+            startDate =
+                formatDateForInput(
+                    firstDayOfWeek
+                );
+
+            endDate =
+                formatDateForInput(
+                    lastDayOfWeek
+                );
+
+            break;
+        }
+
+        case "thisMonth": {
+            const firstDayOfMonth =
+                new Date(
+                    today.getFullYear(),
+                    today.getMonth(),
+                    1
+                );
+
+            const lastDayOfMonth =
+                new Date(
+                    today.getFullYear(),
+                    today.getMonth() +
+                        1,
+                    0
+                );
+
+            startDate =
+                formatDateForInput(
+                    firstDayOfMonth
+                );
+
+            endDate =
+                formatDateForInput(
+                    lastDayOfMonth
+                );
+
+            break;
+        }
+
+        case "last30Days": {
+            const thirtyDaysAgo =
+                new Date(today);
+
+            thirtyDaysAgo.setDate(
+                today.getDate() - 29
+            );
+
+            startDate =
+                formatDateForInput(
+                    thirtyDaysAgo
+                );
+
+            endDate =
+                formatDateForInput(
+                    today
+                );
+
+            break;
+        }
+
+        case "all":
+        default:
+            startDate = "";
+            endDate = "";
+            filterType = "all";
+            break;
+    }
+
+    startDateFilter.value =
+        startDate;
+
+    endDateFilter.value =
+        endDate;
+
+    setActiveQuickFilter(
+        filterType
+    );
+
+    currentPage = 1;
+
+    applyFilters();
+}
+
+function setActiveQuickFilter(
+    filterType
+) {
+    quickFilterButtons.forEach(
+        (button) => {
+            const isActive =
+                button.dataset.filter ===
+                filterType;
+
+            button.classList.toggle(
+                "active",
+                isActive
+            );
+        }
+    );
+}
+
+function getFirstDayOfWeek(
+    date
+) {
+    const result =
+        new Date(date);
+
+    const day =
+        result.getDay();
+
+    const difference =
+        day === 0
+            ? -6
+            : 1 - day;
+
+    result.setDate(
+        result.getDate() +
+            difference
+    );
+
+    return result;
+}
+
+function formatDateForInput(
+    date
+) {
+    const year =
+        date.getFullYear();
+
+    const month =
+        String(
+            date.getMonth() + 1
+        ).padStart(2, "0");
+
+    const day =
+        String(
+            date.getDate()
+        ).padStart(2, "0");
+
+    return `${year}-${month}-${day}`;
 }
 
 /* =====================================================
@@ -525,28 +842,34 @@ function applyFilters() {
         return;
     }
 
-    filteredLogs = allLogs.filter(
-        (log) => {
-            const workDate =
-                String(log.workDate || "");
+    filteredLogs =
+        allLogs.filter(
+            (log) => {
+                const workDate =
+                    String(
+                        log.workDate ||
+                        ""
+                    );
 
-            if (
-                startDate &&
-                workDate < startDate
-            ) {
-                return false;
+                if (
+                    startDate &&
+                    workDate <
+                        startDate
+                ) {
+                    return false;
+                }
+
+                if (
+                    endDate &&
+                    workDate >
+                        endDate
+                ) {
+                    return false;
+                }
+
+                return true;
             }
-
-            if (
-                endDate &&
-                workDate > endDate
-            ) {
-                return false;
-            }
-
-            return true;
-        }
-    );
+        );
 
     renderFilterSummary(
         startDate,
@@ -560,30 +883,40 @@ function renderFilterSummary(
     startDate,
     endDate
 ) {
-    if (!startDate && !endDate) {
+    if (
+        !startDate &&
+        !endDate
+    ) {
         filterSummary.classList.add(
             "hidden"
         );
 
         filterSummary.textContent = "";
+
         return;
     }
 
     const startText =
         startDate
-            ? formatDate(startDate)
+            ? formatDate(
+                startDate
+            )
             : "İlk kayıt";
 
     const endText =
         endDate
-            ? formatDate(endDate)
+            ? formatDate(
+                endDate
+            )
             : "Bugün";
 
     const totalMinutes =
         filteredLogs.reduce(
             (total, log) =>
                 total +
-                getLogDurationMinutes(log),
+                getLogDurationMinutes(
+                    log
+                ),
             0
         );
 
@@ -604,7 +937,9 @@ function renderFilterSummary(
 function renderTable() {
     logsTableBody.innerHTML = "";
 
-    if (filteredLogs.length === 0) {
+    if (
+        filteredLogs.length === 0
+    ) {
         emptyState.classList.remove(
             "hidden"
         );
@@ -620,21 +955,32 @@ function renderTable() {
         return;
     }
 
-    emptyState.classList.add("hidden");
-    tableWrapper.classList.remove("hidden");
+    emptyState.classList.add(
+        "hidden"
+    );
+
+    tableWrapper.classList.remove(
+        "hidden"
+    );
 
     const totalPages =
         getTotalPages();
 
-    if (currentPage > totalPages) {
-        currentPage = totalPages;
+    if (
+        currentPage > totalPages
+    ) {
+        currentPage =
+            totalPages;
     }
 
     const startIndex =
-        (currentPage - 1) * pageSize;
+        (
+            currentPage - 1
+        ) * pageSize;
 
     const endIndex =
-        startIndex + pageSize;
+        startIndex +
+        pageSize;
 
     const pageLogs =
         filteredLogs.slice(
@@ -642,83 +988,109 @@ function renderTable() {
             endIndex
         );
 
-    pageLogs.forEach((log) => {
-        const row =
-            document.createElement("tr");
+    pageLogs.forEach(
+        (log) => {
+            const row =
+                document.createElement(
+                    "tr"
+                );
 
-        const itemText =
-            log.itemNumber
-                ? `Madde ${escapeHtml(
-                    String(log.itemNumber)
-                )}`
-                : "Genel";
+            const itemText =
+                log.itemNumber
+                    ? `Madde ${escapeHtml(
+                        String(
+                            log.itemNumber
+                        )
+                    )}`
+                    : "Genel";
 
-        const description =
-            escapeHtml(
-                log.description || ""
+            const description =
+                escapeHtml(
+                    log.description ||
+                    ""
+                );
+
+            const nextStep =
+                escapeHtml(
+                    log.nextStep ||
+                    ""
+                );
+
+            row.innerHTML = `
+                <td data-label="Tarih">
+                    <strong class="table-date">
+                        ${formatDate(
+                            log.workDate
+                        )}
+                    </strong>
+                </td>
+
+                <td data-label="Madde">
+                    <span class="table-item-badge">
+                        ${itemText}
+                    </span>
+                </td>
+
+                <td data-label="Konu">
+                    <strong class="table-title">
+                        ${escapeHtml(
+                            log.title ||
+                            ""
+                        )}
+                    </strong>
+                </td>
+
+                <td data-label="Yapılan Çalışma">
+                    <div class="table-description">
+                        <span>
+                            ${description}
+                        </span>
+
+                        ${
+                            nextStep
+                                ? `
+                                    <small>
+                                        <strong>
+                                            Sonraki adım:
+                                        </strong>
+
+                                        ${nextStep}
+                                    </small>
+                                `
+                                : ""
+                        }
+                    </div>
+                </td>
+
+                <td data-label="Süre">
+                    <span class="hours-badge">
+                        ${formatDuration(
+                            getLogDurationMinutes(
+                                log
+                            )
+                        )}
+                    </span>
+                </td>
+
+                <td data-label="Durum">
+                    <span class="
+                        status-badge
+                        ${getStatusClass(
+                            log.status
+                        )}
+                    ">
+                        ${getStatusText(
+                            log.status
+                        )}
+                    </span>
+                </td>
+            `;
+
+            logsTableBody.appendChild(
+                row
             );
-
-        const nextStep =
-            escapeHtml(
-                log.nextStep || ""
-            );
-
-        row.innerHTML = `
-            <td data-label="Tarih">
-                <strong class="table-date">
-                    ${formatDate(log.workDate)}
-                </strong>
-            </td>
-
-            <td data-label="Madde">
-                <span class="table-item-badge">
-                    ${itemText}
-                </span>
-            </td>
-
-            <td data-label="Konu">
-                <strong class="table-title">
-                    ${escapeHtml(log.title || "")}
-                </strong>
-            </td>
-
-            <td data-label="Yapılan Çalışma">
-                <div class="table-description">
-                    <span>${description}</span>
-
-                    ${
-                        nextStep
-                            ? `
-                                <small>
-                                    <strong>Sonraki adım:</strong>
-                                    ${nextStep}
-                                </small>
-                            `
-                            : ""
-                    }
-                </div>
-            </td>
-
-            <td data-label="Süre">
-                <span class="hours-badge">
-                    ${formatDuration(
-                        getLogDurationMinutes(log)
-                    )}
-                </span>
-            </td>
-
-            <td data-label="Durum">
-                <span class="
-                    status-badge
-                    ${getStatusClass(log.status)}
-                ">
-                    ${getStatusText(log.status)}
-                </span>
-            </td>
-        `;
-
-        logsTableBody.appendChild(row);
-    });
+        }
+    );
 
     renderPagination();
 }
@@ -744,11 +1116,15 @@ function renderPagination() {
     );
 
     const startRecord =
-        (currentPage - 1) * pageSize + 1;
+        (
+            currentPage - 1
+        ) * pageSize + 1;
 
     const endRecord =
         Math.min(
-            currentPage * pageSize,
+            currentPage *
+                pageSize,
+
             filteredLogs.length
         );
 
@@ -763,59 +1139,83 @@ function renderPagination() {
         currentPage === 1;
 
     nextPageButton.disabled =
-        currentPage === totalPages;
+        currentPage ===
+        totalPages;
 
     lastPageButton.disabled =
-        currentPage === totalPages;
+        currentPage ===
+        totalPages;
 
-    renderPageNumbers(totalPages);
+    renderPageNumbers(
+        totalPages
+    );
 }
 
-function renderPageNumbers(totalPages) {
+function renderPageNumbers(
+    totalPages
+) {
     pageNumbers.innerHTML = "";
 
     const visiblePages =
-        getVisiblePageNumbers(totalPages);
-
-    visiblePages.forEach((page) => {
-        if (page === "...") {
-            const dots =
-                document.createElement("span");
-
-            dots.className =
-                "pagination-dots";
-
-            dots.textContent = "...";
-
-            pageNumbers.appendChild(dots);
-            return;
-        }
-
-        const button =
-            document.createElement("button");
-
-        button.type = "button";
-
-        button.className =
-            `pagination-button ${
-                page === currentPage
-                    ? "active"
-                    : ""
-            }`;
-
-        button.textContent =
-            String(page);
-
-        button.addEventListener(
-            "click",
-            () => {
-                currentPage = page;
-                renderTable();
-            }
+        getVisiblePageNumbers(
+            totalPages
         );
 
-        pageNumbers.appendChild(button);
-    });
+    visiblePages.forEach(
+        (page) => {
+            if (page === "...") {
+                const dots =
+                    document.createElement(
+                        "span"
+                    );
+
+                dots.className =
+                    "pagination-dots";
+
+                dots.textContent =
+                    "...";
+
+                pageNumbers.appendChild(
+                    dots
+                );
+
+                return;
+            }
+
+            const button =
+                document.createElement(
+                    "button"
+                );
+
+            button.type =
+                "button";
+
+            button.className =
+                `pagination-button ${
+                    page ===
+                    currentPage
+                        ? "active"
+                        : ""
+                }`;
+
+            button.textContent =
+                String(page);
+
+            button.addEventListener(
+                "click",
+                () => {
+                    currentPage =
+                        page;
+
+                    renderTable();
+                }
+            );
+
+            pageNumbers.appendChild(
+                button
+            );
+        }
+    );
 }
 
 function getVisiblePageNumbers(
@@ -823,8 +1223,13 @@ function getVisiblePageNumbers(
 ) {
     if (totalPages <= 7) {
         return Array.from(
-            { length: totalPages },
-            (_, index) => index + 1
+            {
+                length:
+                    totalPages
+            },
+
+            (_, index) =>
+                index + 1
         );
     }
 
@@ -883,7 +1288,9 @@ function getTotalPages() {
 function getProjectTotalMinutes() {
     const totalHours =
         Number(
-            currentProject?.totalHours || 0
+            currentProject
+                ?.totalHours ||
+            0
         );
 
     return Math.round(
@@ -891,29 +1298,39 @@ function getProjectTotalMinutes() {
     );
 }
 
-function getLogDurationMinutes(log) {
+function getLogDurationMinutes(
+    log
+) {
     if (
         Number.isFinite(
-            Number(log.durationMinutes)
+            Number(
+                log.durationMinutes
+            )
         )
     ) {
         return Math.max(
             0,
             Math.round(
-                Number(log.durationMinutes)
+                Number(
+                    log.durationMinutes
+                )
             )
         );
     }
 
     if (
         Number.isFinite(
-            Number(log.hours)
+            Number(
+                log.hours
+            )
         )
     ) {
         return Math.max(
             0,
             Math.round(
-                Number(log.hours) * 60
+                Number(
+                    log.hours
+                ) * 60
             )
         );
     }
@@ -921,17 +1338,23 @@ function getLogDurationMinutes(log) {
     return 0;
 }
 
-function formatDuration(totalMinutes) {
+function formatDuration(
+    totalMinutes
+) {
     const safeMinutes =
         Math.max(
             0,
             Math.round(
-                Number(totalMinutes) || 0
+                Number(
+                    totalMinutes
+                ) || 0
             )
         );
 
     const hours =
-        Math.floor(safeMinutes / 60);
+        Math.floor(
+            safeMinutes / 60
+        );
 
     const minutes =
         safeMinutes % 60;
@@ -947,17 +1370,26 @@ function formatDuration(totalMinutes) {
     return `${hours} saat ${minutes} dakika`;
 }
 
-function formatDate(dateValue) {
+function formatDate(
+    dateValue
+) {
     if (!dateValue) {
         return "—";
     }
 
-    const date = new Date(
-        `${dateValue}T12:00:00`
-    );
+    const date =
+        new Date(
+            `${dateValue}T12:00:00`
+        );
 
-    if (Number.isNaN(date.getTime())) {
-        return escapeHtml(dateValue);
+    if (
+        Number.isNaN(
+            date.getTime()
+        )
+    ) {
+        return escapeHtml(
+            dateValue
+        );
     }
 
     return new Intl.DateTimeFormat(
@@ -970,54 +1402,62 @@ function formatDate(dateValue) {
     ).format(date);
 }
 
-function getStatusText(status) {
+function getStatusText(
+    status
+) {
     const statusTexts = {
-        analysis: "Analiz",
-        in_progress: "Devam Ediyor",
-        completed: "Tamamlandı",
-        waiting: "Bilgi Bekleniyor"
+        analysis:
+            "Analiz",
+
+        in_progress:
+            "Devam Ediyor",
+
+        completed:
+            "Tamamlandı",
+
+        waiting:
+            "Bilgi Bekleniyor"
     };
 
-    return statusTexts[status] ||
-        "Devam Ediyor";
+    return (
+        statusTexts[status] ||
+        "Devam Ediyor"
+    );
 }
 
-function getStatusClass(status) {
+function getStatusClass(
+    status
+) {
     const statusClasses = {
-        analysis: "analysis",
-        in_progress: "in-progress",
-        completed: "completed",
-        waiting: "waiting"
+        analysis:
+            "analysis",
+
+        in_progress:
+            "in-progress",
+
+        completed:
+            "completed",
+
+        waiting:
+            "waiting"
     };
 
-    return statusClasses[status] ||
-        "in-progress";
+    return (
+        statusClasses[status] ||
+        "in-progress"
+    );
 }
 
 function escapeHtml(value) {
     const element =
-        document.createElement("div");
+        document.createElement(
+            "div"
+        );
 
     element.textContent =
-        String(value ?? "");
+        String(
+            value ?? ""
+        );
 
     return element.innerHTML;
-}
-function initializeCurrentMonthFilter() {
-
-    const today = new Date();
-
-    const year = today.getFullYear();
-    const month = today.getMonth();
-
-    const firstDay = new Date(year, month, 1);
-    const lastDay = new Date(year, month + 1, 0);
-
-    startDateFilter.value = firstDay
-        .toISOString()
-        .split("T")[0];
-
-    endDateFilter.value = lastDay
-        .toISOString()
-        .split("T")[0];
 }

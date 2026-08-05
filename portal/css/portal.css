@@ -2013,3 +2013,89 @@ body.customer-dashboard .pagination-dots {
         flex-wrap: wrap;
     }
 }
+/* =====================================================
+   HIZLI TARİH FİLTRELERİ
+===================================================== */
+
+body.customer-dashboard .log-filter-panel {
+    display: block;
+}
+
+body.customer-dashboard .quick-filter-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 16px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid #dfe8da;
+    flex-wrap: wrap;
+}
+
+body.customer-dashboard .quick-filter-button {
+    min-height: 36px;
+    padding: 7px 13px;
+    border: 1px solid #d7e2d2;
+    border-radius: 999px;
+    color: #58705e;
+    background: #ffffff;
+    font-size: 12px;
+    font-weight: 750;
+    transition:
+        color 0.2s ease,
+        background 0.2s ease,
+        border-color 0.2s ease,
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+body.customer-dashboard
+.quick-filter-button:hover {
+    transform: translateY(-1px);
+    border-color: #9cb994;
+    color: #35553d;
+    background: #f5f9f2;
+}
+
+body.customer-dashboard
+.quick-filter-button.active {
+    border-color: #789f6e;
+    color: #ffffff;
+    background:
+        linear-gradient(
+            135deg,
+            #5d9166,
+            #8eb56d
+        );
+    box-shadow:
+        0 7px 18px
+        rgba(88, 139, 91, 0.19);
+}
+
+body.customer-dashboard .log-filter-main {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+@media (max-width: 900px) {
+    body.customer-dashboard
+    .log-filter-main {
+        align-items: stretch;
+        flex-direction: column;
+    }
+}
+
+@media (max-width: 680px) {
+    body.customer-dashboard
+    .quick-filter-group {
+        display: grid;
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+
+    body.customer-dashboard
+    .quick-filter-button {
+        width: 100%;
+    }
+}
