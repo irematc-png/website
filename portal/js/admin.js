@@ -38,8 +38,11 @@ const projectSelect =
 const workDateInput =
     document.getElementById("workDate");
 
-const hoursInput =
-    document.getElementById("hours");
+const durationMinutesInput =
+    document.getElementById("durationMinutes");
+
+const durationPreview =
+    document.getElementById("durationPreview");
 
 const itemNumberInput =
     document.getElementById("itemNumber");
@@ -67,6 +70,7 @@ const adminLogsContainer =
 
 let currentAdminProfile = null;
 let projects = [];
+let unsubscribeRecentLogs = null;
 
 onAuthStateChanged(auth, async (user) => {
     if (!user) {
@@ -83,110 +87,178 @@ onAuthStateChanged(auth, async (user) => {
         );
 
         await signOut(auth);
-
         window.location.replace("./index.html");
     }
 });
 
-logoutButton.addEventListener("click", async () => {
-    await signOut(auth);
-    window.location.replace("./index.html");
-});
-
-logForm.addEventListener("submit", async (event) => {
-    event.preventDefault();
-
-    clearMessage();
-
-    const selectedProject =
-        projects.find(
-            (project) =>
-                project.id === projectSelect.value
-        );
-
-    if (!selectedProject) {
-        showMessage(
-            "Lütfen bir proje seçin.",
-            "error"
-        );
-
-        return;
-    }
-
-    const hours = Number(hoursInput.value);
-
-    if (
-        !Number.isFinite(hours) ||
-        hours <= 0 ||
-        hours > 24
-    ) {
-        showMessage(
-            "Harcanan süre 0 ile 24 saat arasında olmalıdır.",
-            "error"
-        );
-
-        return;
-    }
-
-    const itemNumber =
-        itemNumberInput.value
-            ? Number(itemNumberInput.value)
-            : null;
-
-    setLoading(true);
-
-    try {
-        await addDoc(
-            collection(db, "workLogs"),
-            {
-                projectId: selectedProject.id,
-                clientId: selectedProject.clientId,
-
-                workDate: workDateInput.value,
-                hours,
-                itemNumber,
-
-                status: statusInput.value,
-
-                title: titleInput.value.trim(),
-
-                description:
-                    descriptionInput.value.trim(),
-
-                nextStep:
-                    nextStepInput.value.trim(),
-
-                createdBy: auth.currentUser.uid,
-
-                createdByName:
-                    currentAdminProfile.displayName ||
-                    auth.currentUser.email,
-
-                createdAt: serverTimestamp(),
-                updatedAt: serverTimestamp()
+logoutButton.addEventListener(
+    "click",
+    async () => {
+        try {
+            if (unsubscribeRecentLogs) {
+                unsubscribeRecentLogs();
             }
-        );
 
-        showMessage(
-            "Çalışma kaydı başarıyla oluşturuldu.",
-            "success"
-        );
-
-        resetForm();
-    } catch (error) {
-        console.error(
-            "Çalışma kaydı oluşturulamadı:",
-            error
-        );
-
-        showMessage(
-            "Çalışma kaydı oluşturulamadı.",
-            "error"
-        );
-    } finally {
-        setLoading(false);
+            await signOut(auth);
+            window.location.replace("./index.html");
+        } catch (error) {
+            console.error(
+                "Çıkış işlemi gerçekleştirilemedi:",
+                error
+            );
+        }
     }
-});
+);
+
+durationMinutesInput.addEventListener(
+    "input",
+    updateDurationPreview
+);
+
+logForm.addEventListener(
+    "submit",
+    async (event) => {
+        event.preventDefault();
+
+        clearMessage();
+
+        const selectedProject =
+            projects.find(
+                (project) =>
+                    project.id ===
+                    projectSelect.value
+            );
+
+        if (!selectedProject) {
+            showMessage(
+                "Lütfen bir proje seçin.",
+                "error"
+            );
+
+            return;
+        }
+
+        const durationMinutes =
+            Number(durationMinutesInput.value);
+
+        if (
+            !Number.isInteger(durationMinutes) ||
+            durationMinutes < 1 ||
+            durationMinutes > 1440
+        ) {
+            showMessage(
+                "Harcanan süre 1 ile 1440 dakika arasında olmalıdır.",
+                "error"
+            );
+
+            durationMinutesInput.focus();
+            return;
+        }
+
+        const itemNumber =
+            itemNumberInput.value.trim()
+                ? Number(itemNumberInput.value)
+                : null;
+
+        if (
+            itemNumber !== null &&
+            (
+                !Number.isInteger(itemNumber) ||
+                itemNumber < 1
+            )
+        ) {
+            showMessage(
+                "Madde numarası pozitif bir tam sayı olmalıdır.",
+                "error"
+            );
+
+            itemNumberInput.focus();
+            return;
+        }
+
+        const title =
+            titleInput.value.trim();
+
+        const description =
+            descriptionInput.value.trim();
+
+        const nextStep =
+            nextStepInput.value.trim();
+
+        if (!title || !description) {
+            showMessage(
+                "Çalışma başlığı ve yapılan çalışma alanları zorunludur.",
+                "error"
+            );
+
+            return;
+        }
+
+        setLoading(true);
+
+        try {
+            await addDoc(
+                collection(db, "workLogs"),
+                {
+                    projectId:
+                        selectedProject.id,
+
+                    clientId:
+                        selectedProject.clientId,
+
+                    workDate:
+                        workDateInput.value,
+
+                    durationMinutes,
+
+                    itemNumber,
+
+                    status:
+                        statusInput.value,
+
+                    title,
+
+                    description,
+
+                    nextStep,
+
+                    createdBy:
+                        auth.currentUser.uid,
+
+                    createdByName:
+                        currentAdminProfile
+                            .displayName ||
+                        auth.currentUser.email,
+
+                    createdAt:
+                        serverTimestamp(),
+
+                    updatedAt:
+                        serverTimestamp()
+                }
+            );
+
+            showMessage(
+                "Çalışma kaydı başarıyla oluşturuldu.",
+                "success"
+            );
+
+            resetForm();
+        } catch (error) {
+            console.error(
+                "Çalışma kaydı oluşturulamadı:",
+                error
+            );
+
+            showMessage(
+                "Çalışma kaydı oluşturulamadı. Yetkilerinizi ve internet bağlantınızı kontrol edin.",
+                "error"
+            );
+        } finally {
+            setLoading(false);
+        }
+    }
+);
 
 async function initializeAdmin(user) {
     const profileReference = doc(
@@ -227,6 +299,7 @@ async function initializeAdmin(user) {
     listenToRecentLogs();
 
     setDefaultDate();
+    updateDurationPreview();
 
     document.body.classList.remove(
         "auth-loading"
@@ -246,11 +319,15 @@ async function loadProjects() {
         })
     );
 
-    projects.sort((a, b) =>
-        String(a.name).localeCompare(
-            String(b.name),
-            "tr"
-        )
+    projects.sort(
+        (firstProject, secondProject) =>
+            String(firstProject.name || "")
+                .localeCompare(
+                    String(
+                        secondProject.name || ""
+                    ),
+                    "tr"
+                )
     );
 
     projectSelect.innerHTML = `
@@ -266,7 +343,8 @@ async function loadProjects() {
         option.value = project.id;
 
         option.textContent =
-            `${project.clientName} — ${project.name}`;
+            `${project.clientName || "Müşteri"} — ` +
+            `${project.name || "Proje"}`;
 
         projectSelect.appendChild(option);
     });
@@ -279,8 +357,9 @@ function listenToRecentLogs() {
         limit(10)
     );
 
-    onSnapshot(
+    unsubscribeRecentLogs = onSnapshot(
         recentLogsQuery,
+
         (snapshot) => {
             const logs = snapshot.docs.map(
                 (documentSnapshot) => ({
@@ -291,6 +370,7 @@ function listenToRecentLogs() {
 
             renderRecentLogs(logs);
         },
+
         (error) => {
             console.error(
                 "Admin log listesi yüklenemedi:",
@@ -346,12 +426,59 @@ function renderRecentLogs(logs) {
             </div>
 
             <span class="hours-badge">
-                ${formatNumber(log.hours)} saat
+                ${formatDuration(
+                    getLogDurationMinutes(log)
+                )}
             </span>
         `;
 
         adminLogsContainer.appendChild(element);
     });
+}
+
+function getLogDurationMinutes(log) {
+    /*
+     * Yeni kayıtlar durationMinutes kullanır.
+     * Eski test kayıtlarında hours varsa
+     * onları da geçici olarak destekler.
+     */
+    if (
+        Number.isFinite(
+            Number(log.durationMinutes)
+        )
+    ) {
+        return Number(log.durationMinutes);
+    }
+
+    if (
+        Number.isFinite(
+            Number(log.hours)
+        )
+    ) {
+        return Math.round(
+            Number(log.hours) * 60
+        );
+    }
+
+    return 0;
+}
+
+function updateDurationPreview() {
+    const minutes =
+        Number(durationMinutesInput.value);
+
+    if (
+        !Number.isInteger(minutes) ||
+        minutes < 1
+    ) {
+        durationPreview.textContent =
+            "Süreyi dakika olarak girin.";
+
+        return;
+    }
+
+    durationPreview.textContent =
+        `Müşteriye ${formatDuration(minutes)} olarak gösterilecek.`;
 }
 
 function resetForm() {
@@ -367,23 +494,55 @@ function resetForm() {
         "in_progress";
 
     setDefaultDate();
+    updateDurationPreview();
+
+    titleInput.focus();
 }
 
 function setDefaultDate() {
     const now = new Date();
 
-    const year = now.getFullYear();
+    const year =
+        now.getFullYear();
 
-    const month = String(
-        now.getMonth() + 1
-    ).padStart(2, "0");
+    const month =
+        String(
+            now.getMonth() + 1
+        ).padStart(2, "0");
 
-    const day = String(
-        now.getDate()
-    ).padStart(2, "0");
+    const day =
+        String(
+            now.getDate()
+        ).padStart(2, "0");
 
     workDateInput.value =
         `${year}-${month}-${day}`;
+}
+
+function formatDuration(totalMinutes) {
+    const safeMinutes =
+        Math.max(
+            0,
+            Math.round(
+                Number(totalMinutes) || 0
+            )
+        );
+
+    const hours =
+        Math.floor(safeMinutes / 60);
+
+    const minutes =
+        safeMinutes % 60;
+
+    if (hours === 0) {
+        return `${minutes} dakika`;
+    }
+
+    if (minutes === 0) {
+        return `${hours} saat`;
+    }
+
+    return `${hours} saat ${minutes} dakika`;
 }
 
 function setLoading(isLoading) {
@@ -404,6 +563,7 @@ function showMessage(message, type) {
 
 function clearMessage() {
     formMessage.textContent = "";
+
     formMessage.className =
         "form-message";
 }
@@ -417,6 +577,10 @@ function formatDate(dateValue) {
         `${dateValue}T12:00:00`
     );
 
+    if (Number.isNaN(date.getTime())) {
+        return escapeHtml(dateValue);
+    }
+
     return new Intl.DateTimeFormat(
         "tr-TR",
         {
@@ -427,20 +591,12 @@ function formatDate(dateValue) {
     ).format(date);
 }
 
-function formatNumber(value) {
-    return new Intl.NumberFormat(
-        "tr-TR",
-        {
-            maximumFractionDigits: 2
-        }
-    ).format(Number(value || 0));
-}
-
 function escapeHtml(value) {
     const element =
         document.createElement("div");
 
-    element.textContent = String(value);
+    element.textContent =
+        String(value ?? "");
 
     return element.innerHTML;
 }

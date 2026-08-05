@@ -724,3 +724,45 @@ a {
         flex-direction: column;
     }
 }
+
+.duration-input-wrapper {
+    position: relative;
+}
+
+.duration-input-wrapper input {
+    padding-right: 82px;
+}
+
+.input-suffix {
+    position: absolute;
+    top: 50%;
+    right: 14px;
+    pointer-events: none;
+    color: var(--muted);
+    font-size: 14px;
+    transform: translateY(-50%);
+}
+
+.field-helper {
+    display: block;
+    margin-top: -2px;
+    color: var(--muted);
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+/*
+ * Özet kartındaki süre metinleri artık
+ * "6 saat 15 dakika" olabileceği için
+ * biraz daha küçük ve taşmaya dayanıklı.
+ */
+.summary-card strong {
+    overflow-wrap: anywhere;
+}
+
+@media (max-width: 620px) {
+    .summary-card strong {
+        font-size: 23px;
+        line-height: 1.2;
+    }
+}

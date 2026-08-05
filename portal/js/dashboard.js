@@ -51,7 +51,9 @@ const logCountElement =
     document.getElementById("logCount");
 
 const progressPercentageElement =
-    document.getElementById("progressPercentage");
+    document.getElementById(
+        "progressPercentage"
+    );
 
 const progressBarElement =
     document.getElementById("progressBar");
@@ -83,26 +85,35 @@ onAuthStateChanged(auth, async (user) => {
             error
         );
 
+        loadingState.classList.remove("hidden");
+
         loadingState.textContent =
             "Proje bilgileri yüklenemedi.";
     }
 });
 
-logoutButton.addEventListener("click", async () => {
-    try {
-        if (unsubscribeLogs) {
-            unsubscribeLogs();
+logoutButton.addEventListener(
+    "click",
+    async () => {
+        try {
+            if (unsubscribeLogs) {
+                unsubscribeLogs();
+            }
+
+            await signOut(auth);
+            window.location.replace("./index.html");
+        } catch (error) {
+            console.error(
+                "Çıkış hatası:",
+                error
+            );
         }
-
-        await signOut(auth);
-
-        window.location.replace("./index.html");
-    } catch (error) {
-        console.error("Çıkış hatası:", error);
     }
-});
+);
 
-async function initializeCustomerDashboard(user) {
+async function initializeCustomerDashboard(
+    user
+) {
     const profileReference = doc(
         db,
         "users",
@@ -197,13 +208,16 @@ function renderProject() {
 
     projectStatusElement.className =
         `status-pill ${
-            isActive ? "active" : "passive"
+            isActive
+                ? "active"
+                : "passive"
         }`;
 
+    const totalMinutes =
+        getProjectTotalMinutes();
+
     totalHoursElement.textContent =
-        formatNumber(
-            currentProject.totalHours || 0
-        );
+        formatDuration(totalMinutes);
 }
 
 function listenToWorkLogs() {
@@ -254,35 +268,42 @@ function listenToWorkLogs() {
 }
 
 function renderSummary(logs) {
-    const totalHours = Number(
-        currentProject.totalHours || 0
-    );
+    const totalMinutes =
+        getProjectTotalMinutes();
 
-    const usedHours = logs.reduce(
-        (total, log) =>
-            total + Number(log.hours || 0),
-        0
-    );
+    const usedMinutes =
+        logs.reduce(
+            (total, log) =>
+                total +
+                getLogDurationMinutes(log),
+            0
+        );
 
-    const remainingHours =
-        Math.max(totalHours - usedHours, 0);
+    const remainingMinutes =
+        Math.max(
+            totalMinutes - usedMinutes,
+            0
+        );
 
     const percentage =
-        totalHours > 0
+        totalMinutes > 0
             ? Math.min(
-                (usedHours / totalHours) * 100,
+                (
+                    usedMinutes /
+                    totalMinutes
+                ) * 100,
                 100
             )
             : 0;
 
     totalHoursElement.textContent =
-        formatNumber(totalHours);
+        formatDuration(totalMinutes);
 
     usedHoursElement.textContent =
-        formatNumber(usedHours);
+        formatDuration(usedMinutes);
 
     remainingHoursElement.textContent =
-        formatNumber(remainingHours);
+        formatDuration(remainingMinutes);
 
     logCountElement.textContent =
         String(logs.length);
@@ -308,13 +329,16 @@ function renderLogs(logs) {
         const logElement =
             document.createElement("article");
 
-        logElement.className = "log-item";
+        logElement.className =
+            "log-item";
 
         const safeTitle =
             escapeHtml(log.title || "");
 
         const safeDescription =
-            escapeHtml(log.description || "");
+            escapeHtml(
+                log.description || ""
+            );
 
         const safeNextStep =
             escapeHtml(log.nextStep || "");
@@ -326,26 +350,40 @@ function renderLogs(logs) {
                 )}`
                 : "Genel Çalışma";
 
+        const durationMinutes =
+            getLogDurationMinutes(log);
+
         logElement.innerHTML = `
             <div class="log-date-column">
                 <strong>
                     ${formatDate(log.workDate)}
                 </strong>
 
-                <span>${itemText}</span>
+                <span>
+                    ${itemText}
+                </span>
             </div>
 
             <div class="log-content-column">
-                <h3>${safeTitle}</h3>
+                <h3>
+                    ${safeTitle}
+                </h3>
 
-                <p>${safeDescription}</p>
+                <p>
+                    ${safeDescription}
+                </p>
 
                 ${
                     safeNextStep
                         ? `
                             <div class="next-step">
-                                <strong>Sonraki adım:</strong>
-                                <span>${safeNextStep}</span>
+                                <strong>
+                                    Sonraki adım:
+                                </strong>
+
+                                <span>
+                                    ${safeNextStep}
+                                </span>
                             </div>
                         `
                         : ""
@@ -354,27 +392,100 @@ function renderLogs(logs) {
 
             <div class="log-badges">
                 <span class="hours-badge">
-                    ${formatNumber(log.hours)} saat
+                    ${formatDuration(
+                        durationMinutes
+                    )}
                 </span>
 
-                <span class="status-badge ${getStatusClass(log.status)}">
+                <span class="
+                    status-badge
+                    ${getStatusClass(log.status)}
+                ">
                     ${getStatusText(log.status)}
                 </span>
             </div>
         `;
 
-        logsContainer.appendChild(logElement);
+        logsContainer.appendChild(
+            logElement
+        );
     });
 }
 
-function formatNumber(value) {
-    return new Intl.NumberFormat(
-        "tr-TR",
-        {
-            minimumFractionDigits: 0,
-            maximumFractionDigits: 2
-        }
-    ).format(Number(value || 0));
+function getProjectTotalMinutes() {
+    /*
+     * Proje kaydında totalHours tutulmaya
+     * devam ediyor. Burada dakikaya çeviriyoruz.
+     */
+    const totalHours =
+        Number(
+            currentProject?.totalHours || 0
+        );
+
+    return Math.round(
+        totalHours * 60
+    );
+}
+
+function getLogDurationMinutes(log) {
+    /*
+     * Yeni kayıtlar durationMinutes kullanır.
+     * Eski test kayıtlarında hours bulunuyorsa
+     * onları da destekler.
+     */
+    if (
+        Number.isFinite(
+            Number(log.durationMinutes)
+        )
+    ) {
+        return Math.max(
+            0,
+            Math.round(
+                Number(log.durationMinutes)
+            )
+        );
+    }
+
+    if (
+        Number.isFinite(
+            Number(log.hours)
+        )
+    ) {
+        return Math.max(
+            0,
+            Math.round(
+                Number(log.hours) * 60
+            )
+        );
+    }
+
+    return 0;
+}
+
+function formatDuration(totalMinutes) {
+    const safeMinutes =
+        Math.max(
+            0,
+            Math.round(
+                Number(totalMinutes) || 0
+            )
+        );
+
+    const hours =
+        Math.floor(safeMinutes / 60);
+
+    const minutes =
+        safeMinutes % 60;
+
+    if (hours === 0) {
+        return `${minutes} dakika`;
+    }
+
+    if (minutes === 0) {
+        return `${hours} saat`;
+    }
+
+    return `${hours} saat ${minutes} dakika`;
 }
 
 function formatDate(dateValue) {
@@ -387,7 +498,7 @@ function formatDate(dateValue) {
     );
 
     if (Number.isNaN(date.getTime())) {
-        return dateValue;
+        return escapeHtml(dateValue);
     }
 
     return new Intl.DateTimeFormat(
@@ -402,21 +513,36 @@ function formatDate(dateValue) {
 
 function getStatusText(status) {
     const statusTexts = {
-        analysis: "Analiz",
-        in_progress: "Devam Ediyor",
-        completed: "Tamamlandı",
-        waiting: "Bilgi Bekleniyor"
+        analysis:
+            "Analiz",
+
+        in_progress:
+            "Devam Ediyor",
+
+        completed:
+            "Tamamlandı",
+
+        waiting:
+            "Bilgi Bekleniyor"
     };
 
-    return statusTexts[status] || "Devam Ediyor";
+    return statusTexts[status] ||
+        "Devam Ediyor";
 }
 
 function getStatusClass(status) {
     const statusClasses = {
-        analysis: "analysis",
-        in_progress: "in-progress",
-        completed: "completed",
-        waiting: "waiting"
+        analysis:
+            "analysis",
+
+        in_progress:
+            "in-progress",
+
+        completed:
+            "completed",
+
+        waiting:
+            "waiting"
     };
 
     return statusClasses[status] ||
@@ -427,7 +553,8 @@ function escapeHtml(value) {
     const element =
         document.createElement("div");
 
-    element.textContent = String(value);
+    element.textContent =
+        String(value ?? "");
 
     return element.innerHTML;
 }
