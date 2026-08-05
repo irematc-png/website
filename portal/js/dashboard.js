@@ -6,8 +6,7 @@ import {
 import {
     onAuthStateChanged,
     signOut
-} from
-    "https://www.gstatic.com/firebasejs/12.17.0/firebase-auth.js";
+} from "https://www.gstatic.com/firebasejs/12.17.0/firebase-auth.js";
 
 import {
     collection,
@@ -17,8 +16,11 @@ import {
     orderBy,
     query,
     where
-} from
-    "https://www.gstatic.com/firebasejs/12.17.0/firebase-firestore.js";
+} from "https://www.gstatic.com/firebasejs/12.17.0/firebase-firestore.js";
+
+/* =====================================================
+   DOM
+===================================================== */
 
 const userNameElement =
     document.getElementById("userName");
@@ -51,9 +53,7 @@ const logCountElement =
     document.getElementById("logCount");
 
 const progressPercentageElement =
-    document.getElementById(
-        "progressPercentage"
-    );
+    document.getElementById("progressPercentage");
 
 const progressBarElement =
     document.getElementById("progressBar");
@@ -64,12 +64,68 @@ const loadingState =
 const emptyState =
     document.getElementById("emptyState");
 
-const logsContainer =
-    document.getElementById("logsContainer");
+const tableWrapper =
+    document.getElementById("tableWrapper");
+
+const logsTableBody =
+    document.getElementById("logsTableBody");
+
+const startDateFilter =
+    document.getElementById("startDateFilter");
+
+const endDateFilter =
+    document.getElementById("endDateFilter");
+
+const pageSizeSelect =
+    document.getElementById("pageSizeSelect");
+
+const applyFilterButton =
+    document.getElementById("applyFilterButton");
+
+const clearFilterButton =
+    document.getElementById("clearFilterButton");
+
+const filterSummary =
+    document.getElementById("filterSummary");
+
+const paginationContainer =
+    document.getElementById("paginationContainer");
+
+const paginationSummary =
+    document.getElementById("paginationSummary");
+
+const firstPageButton =
+    document.getElementById("firstPageButton");
+
+const previousPageButton =
+    document.getElementById("previousPageButton");
+
+const nextPageButton =
+    document.getElementById("nextPageButton");
+
+const lastPageButton =
+    document.getElementById("lastPageButton");
+
+const pageNumbers =
+    document.getElementById("pageNumbers");
+
+/* =====================================================
+   STATE
+===================================================== */
 
 let currentProfile = null;
 let currentProject = null;
 let unsubscribeLogs = null;
+
+let allLogs = [];
+let filteredLogs = [];
+
+let currentPage = 1;
+let pageSize = 10;
+
+/* =====================================================
+   AUTH
+===================================================== */
 
 onAuthStateChanged(auth, async (user) => {
     if (!user) {
@@ -86,7 +142,6 @@ onAuthStateChanged(auth, async (user) => {
         );
 
         loadingState.classList.remove("hidden");
-
         loadingState.textContent =
             "Proje bilgileri yüklenemedi.";
     }
@@ -104,12 +159,128 @@ logoutButton.addEventListener(
             window.location.replace("./index.html");
         } catch (error) {
             console.error(
-                "Çıkış hatası:",
+                "Çıkış işlemi başarısız:",
                 error
             );
         }
     }
 );
+
+/* =====================================================
+   FILTER EVENTS
+===================================================== */
+
+applyFilterButton.addEventListener(
+    "click",
+    () => {
+        currentPage = 1;
+        applyFilters();
+    }
+);
+
+clearFilterButton.addEventListener(
+    "click",
+    () => {
+        startDateFilter.value = "";
+        endDateFilter.value = "";
+
+        currentPage = 1;
+        applyFilters();
+    }
+);
+
+pageSizeSelect.addEventListener(
+    "change",
+    () => {
+        pageSize =
+            Number(pageSizeSelect.value) || 10;
+
+        currentPage = 1;
+        renderTable();
+    }
+);
+
+startDateFilter.addEventListener(
+    "keydown",
+    (event) => {
+        if (event.key === "Enter") {
+            currentPage = 1;
+            applyFilters();
+        }
+    }
+);
+
+endDateFilter.addEventListener(
+    "keydown",
+    (event) => {
+        if (event.key === "Enter") {
+            currentPage = 1;
+            applyFilters();
+        }
+    }
+);
+
+/* =====================================================
+   PAGINATION EVENTS
+===================================================== */
+
+firstPageButton.addEventListener(
+    "click",
+    () => {
+        if (currentPage === 1) {
+            return;
+        }
+
+        currentPage = 1;
+        renderTable();
+    }
+);
+
+previousPageButton.addEventListener(
+    "click",
+    () => {
+        if (currentPage <= 1) {
+            return;
+        }
+
+        currentPage -= 1;
+        renderTable();
+    }
+);
+
+nextPageButton.addEventListener(
+    "click",
+    () => {
+        const totalPages =
+            getTotalPages();
+
+        if (currentPage >= totalPages) {
+            return;
+        }
+
+        currentPage += 1;
+        renderTable();
+    }
+);
+
+lastPageButton.addEventListener(
+    "click",
+    () => {
+        const totalPages =
+            getTotalPages();
+
+        if (currentPage === totalPages) {
+            return;
+        }
+
+        currentPage = totalPages;
+        renderTable();
+    }
+);
+
+/* =====================================================
+   INITIALIZE
+===================================================== */
 
 async function initializeCustomerDashboard(
     user
@@ -213,50 +384,51 @@ function renderProject() {
                 : "passive"
         }`;
 
-    const totalMinutes =
-        getProjectTotalMinutes();
-
     totalHoursElement.textContent =
-        formatDuration(totalMinutes);
+        formatDuration(
+            getProjectTotalMinutes()
+        );
 }
+
+/* =====================================================
+   FIRESTORE
+===================================================== */
 
 function listenToWorkLogs() {
     const workLogsQuery = query(
-    collection(db, "workLogs"),
+        collection(db, "workLogs"),
 
-    where(
-        "projectId",
-        "==",
-        currentProject.id
-    ),
+        where(
+            "projectId",
+            "==",
+            currentProfile.projectId
+        ),
 
-    where(
-        "clientId",
-        "==",
-        currentProfile.clientId
-    ),
-
-    orderBy(
-        "workDate",
-        "desc"
-    )
-);
+        orderBy(
+            "workDate",
+            "desc"
+        )
+    );
 
     unsubscribeLogs = onSnapshot(
         workLogsQuery,
 
         (snapshot) => {
-            const logs = snapshot.docs.map(
+            allLogs = snapshot.docs.map(
                 (documentSnapshot) => ({
                     id: documentSnapshot.id,
                     ...documentSnapshot.data()
                 })
             );
 
-            loadingState.classList.add("hidden");
+            loadingState.classList.add(
+                "hidden"
+            );
 
-            renderSummary(logs);
-            renderLogs(logs);
+            renderSummary(allLogs);
+
+            currentPage = 1;
+            applyFilters();
         },
 
         (error) => {
@@ -265,13 +437,19 @@ function listenToWorkLogs() {
                 error
             );
 
-            loadingState.classList.remove("hidden");
+            loadingState.classList.remove(
+                "hidden"
+            );
 
             loadingState.textContent =
                 "Çalışma kayıtları yüklenemedi.";
         }
     );
 }
+
+/* =====================================================
+   SUMMARY
+===================================================== */
 
 function renderSummary(logs) {
     const totalMinutes =
@@ -321,108 +499,385 @@ function renderSummary(logs) {
         `${percentage}%`;
 }
 
-function renderLogs(logs) {
-    logsContainer.innerHTML = "";
+/* =====================================================
+   FILTER
+===================================================== */
 
-    if (logs.length === 0) {
-        emptyState.classList.remove("hidden");
+function applyFilters() {
+    const startDate =
+        startDateFilter.value;
+
+    const endDate =
+        endDateFilter.value;
+
+    if (
+        startDate &&
+        endDate &&
+        startDate > endDate
+    ) {
+        alert(
+            "Başlangıç tarihi bitiş tarihinden büyük olamaz."
+        );
+
+        return;
+    }
+
+    filteredLogs = allLogs.filter(
+        (log) => {
+            const workDate =
+                String(log.workDate || "");
+
+            if (
+                startDate &&
+                workDate < startDate
+            ) {
+                return false;
+            }
+
+            if (
+                endDate &&
+                workDate > endDate
+            ) {
+                return false;
+            }
+
+            return true;
+        }
+    );
+
+    renderFilterSummary(
+        startDate,
+        endDate
+    );
+
+    renderTable();
+}
+
+function renderFilterSummary(
+    startDate,
+    endDate
+) {
+    if (!startDate && !endDate) {
+        filterSummary.classList.add(
+            "hidden"
+        );
+
+        filterSummary.textContent = "";
+        return;
+    }
+
+    const startText =
+        startDate
+            ? formatDate(startDate)
+            : "İlk kayıt";
+
+    const endText =
+        endDate
+            ? formatDate(endDate)
+            : "Bugün";
+
+    const totalMinutes =
+        filteredLogs.reduce(
+            (total, log) =>
+                total +
+                getLogDurationMinutes(log),
+            0
+        );
+
+    filterSummary.textContent =
+        `${startText} – ${endText} tarihleri arasında ` +
+        `${filteredLogs.length} kayıt, toplam ` +
+        `${formatDuration(totalMinutes)} çalışma bulunmaktadır.`;
+
+    filterSummary.classList.remove(
+        "hidden"
+    );
+}
+
+/* =====================================================
+   TABLE
+===================================================== */
+
+function renderTable() {
+    logsTableBody.innerHTML = "";
+
+    if (filteredLogs.length === 0) {
+        emptyState.classList.remove(
+            "hidden"
+        );
+
+        tableWrapper.classList.add(
+            "hidden"
+        );
+
+        paginationContainer.classList.add(
+            "hidden"
+        );
+
         return;
     }
 
     emptyState.classList.add("hidden");
+    tableWrapper.classList.remove("hidden");
 
-    logs.forEach((log) => {
-        const logElement =
-            document.createElement("article");
+    const totalPages =
+        getTotalPages();
 
-        logElement.className =
-            "log-item";
+    if (currentPage > totalPages) {
+        currentPage = totalPages;
+    }
 
-        const safeTitle =
-            escapeHtml(log.title || "");
+    const startIndex =
+        (currentPage - 1) * pageSize;
 
-        const safeDescription =
-            escapeHtml(
-                log.description || ""
-            );
+    const endIndex =
+        startIndex + pageSize;
 
-        const safeNextStep =
-            escapeHtml(log.nextStep || "");
+    const pageLogs =
+        filteredLogs.slice(
+            startIndex,
+            endIndex
+        );
+
+    pageLogs.forEach((log) => {
+        const row =
+            document.createElement("tr");
 
         const itemText =
             log.itemNumber
                 ? `Madde ${escapeHtml(
                     String(log.itemNumber)
                 )}`
-                : "Genel Çalışma";
+                : "Genel";
 
-        const durationMinutes =
-            getLogDurationMinutes(log);
+        const description =
+            escapeHtml(
+                log.description || ""
+            );
 
-        logElement.innerHTML = `
-            <div class="log-date-column">
-                <strong>
+        const nextStep =
+            escapeHtml(
+                log.nextStep || ""
+            );
+
+        row.innerHTML = `
+            <td data-label="Tarih">
+                <strong class="table-date">
                     ${formatDate(log.workDate)}
                 </strong>
+            </td>
 
-                <span>
+            <td data-label="Madde">
+                <span class="table-item-badge">
                     ${itemText}
                 </span>
-            </div>
+            </td>
 
-            <div class="log-content-column">
-                <h3>
-                    ${safeTitle}
-                </h3>
+            <td data-label="Konu">
+                <strong class="table-title">
+                    ${escapeHtml(log.title || "")}
+                </strong>
+            </td>
 
-                <p>
-                    ${safeDescription}
-                </p>
+            <td data-label="Yapılan Çalışma">
+                <div class="table-description">
+                    <span>${description}</span>
 
-                ${
-                    safeNextStep
-                        ? `
-                            <div class="next-step">
-                                <strong>
-                                    Sonraki adım:
-                                </strong>
+                    ${
+                        nextStep
+                            ? `
+                                <small>
+                                    <strong>Sonraki adım:</strong>
+                                    ${nextStep}
+                                </small>
+                            `
+                            : ""
+                    }
+                </div>
+            </td>
 
-                                <span>
-                                    ${safeNextStep}
-                                </span>
-                            </div>
-                        `
-                        : ""
-                }
-            </div>
-
-            <div class="log-badges">
+            <td data-label="Süre">
                 <span class="hours-badge">
                     ${formatDuration(
-                        durationMinutes
+                        getLogDurationMinutes(log)
                     )}
                 </span>
+            </td>
 
+            <td data-label="Durum">
                 <span class="
                     status-badge
                     ${getStatusClass(log.status)}
                 ">
                     ${getStatusText(log.status)}
                 </span>
-            </div>
+            </td>
         `;
 
-        logsContainer.appendChild(
-            logElement
+        logsTableBody.appendChild(row);
+    });
+
+    renderPagination();
+}
+
+/* =====================================================
+   PAGINATION
+===================================================== */
+
+function renderPagination() {
+    const totalPages =
+        getTotalPages();
+
+    if (totalPages <= 1) {
+        paginationContainer.classList.add(
+            "hidden"
         );
+
+        return;
+    }
+
+    paginationContainer.classList.remove(
+        "hidden"
+    );
+
+    const startRecord =
+        (currentPage - 1) * pageSize + 1;
+
+    const endRecord =
+        Math.min(
+            currentPage * pageSize,
+            filteredLogs.length
+        );
+
+    paginationSummary.textContent =
+        `${filteredLogs.length} kayıttan ` +
+        `${startRecord}-${endRecord} arası gösteriliyor.`;
+
+    firstPageButton.disabled =
+        currentPage === 1;
+
+    previousPageButton.disabled =
+        currentPage === 1;
+
+    nextPageButton.disabled =
+        currentPage === totalPages;
+
+    lastPageButton.disabled =
+        currentPage === totalPages;
+
+    renderPageNumbers(totalPages);
+}
+
+function renderPageNumbers(totalPages) {
+    pageNumbers.innerHTML = "";
+
+    const visiblePages =
+        getVisiblePageNumbers(totalPages);
+
+    visiblePages.forEach((page) => {
+        if (page === "...") {
+            const dots =
+                document.createElement("span");
+
+            dots.className =
+                "pagination-dots";
+
+            dots.textContent = "...";
+
+            pageNumbers.appendChild(dots);
+            return;
+        }
+
+        const button =
+            document.createElement("button");
+
+        button.type = "button";
+
+        button.className =
+            `pagination-button ${
+                page === currentPage
+                    ? "active"
+                    : ""
+            }`;
+
+        button.textContent =
+            String(page);
+
+        button.addEventListener(
+            "click",
+            () => {
+                currentPage = page;
+                renderTable();
+            }
+        );
+
+        pageNumbers.appendChild(button);
     });
 }
 
+function getVisiblePageNumbers(
+    totalPages
+) {
+    if (totalPages <= 7) {
+        return Array.from(
+            { length: totalPages },
+            (_, index) => index + 1
+        );
+    }
+
+    if (currentPage <= 4) {
+        return [
+            1,
+            2,
+            3,
+            4,
+            5,
+            "...",
+            totalPages
+        ];
+    }
+
+    if (
+        currentPage >=
+        totalPages - 3
+    ) {
+        return [
+            1,
+            "...",
+            totalPages - 4,
+            totalPages - 3,
+            totalPages - 2,
+            totalPages - 1,
+            totalPages
+        ];
+    }
+
+    return [
+        1,
+        "...",
+        currentPage - 1,
+        currentPage,
+        currentPage + 1,
+        "...",
+        totalPages
+    ];
+}
+
+function getTotalPages() {
+    return Math.max(
+        1,
+        Math.ceil(
+            filteredLogs.length /
+            pageSize
+        )
+    );
+}
+
+/* =====================================================
+   HELPERS
+===================================================== */
+
 function getProjectTotalMinutes() {
-    /*
-     * Proje kaydında totalHours tutulmaya
-     * devam ediyor. Burada dakikaya çeviriyoruz.
-     */
     const totalHours =
         Number(
             currentProject?.totalHours || 0
@@ -434,11 +889,6 @@ function getProjectTotalMinutes() {
 }
 
 function getLogDurationMinutes(log) {
-    /*
-     * Yeni kayıtlar durationMinutes kullanır.
-     * Eski test kayıtlarında hours bulunuyorsa
-     * onları da destekler.
-     */
     if (
         Number.isFinite(
             Number(log.durationMinutes)
@@ -511,7 +961,7 @@ function formatDate(dateValue) {
         "tr-TR",
         {
             day: "2-digit",
-            month: "long",
+            month: "short",
             year: "numeric"
         }
     ).format(date);
@@ -519,17 +969,10 @@ function formatDate(dateValue) {
 
 function getStatusText(status) {
     const statusTexts = {
-        analysis:
-            "Analiz",
-
-        in_progress:
-            "Devam Ediyor",
-
-        completed:
-            "Tamamlandı",
-
-        waiting:
-            "Bilgi Bekleniyor"
+        analysis: "Analiz",
+        in_progress: "Devam Ediyor",
+        completed: "Tamamlandı",
+        waiting: "Bilgi Bekleniyor"
     };
 
     return statusTexts[status] ||
@@ -538,17 +981,10 @@ function getStatusText(status) {
 
 function getStatusClass(status) {
     const statusClasses = {
-        analysis:
-            "analysis",
-
-        in_progress:
-            "in-progress",
-
-        completed:
-            "completed",
-
-        waiting:
-            "waiting"
+        analysis: "analysis",
+        in_progress: "in-progress",
+        completed: "completed",
+        waiting: "waiting"
     };
 
     return statusClasses[status] ||

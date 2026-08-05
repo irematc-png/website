@@ -132,31 +132,185 @@
 
 </section>
 
-        <section class="content-card">
+        <section class="content-card logs-table-card">
 
-            <div class="content-heading">
-                <div>
-                    <h2>Süre Kullanımı</h2>
+    <div class="content-heading logs-heading">
+        <div>
+            <h2>Günlük Çalışma Logları</h2>
 
-                    <p>
-                        Tanımlanan toplam proje süresinin
-                        kullanım oranı.
-                    </p>
-                </div>
+            <p>
+                Proje kapsamında gerçekleştirilen çalışmaları
+                tarih aralığına göre görüntüleyin.
+            </p>
+        </div>
+    </div>
 
-                <strong id="progressPercentage">
-                    %0
-                </strong>
+    <div class="log-filter-panel">
+
+        <div class="log-filter-group">
+
+            <div class="filter-field">
+                <label for="startDateFilter">
+                    Başlangıç Tarihi
+                </label>
+
+                <input
+                    id="startDateFilter"
+                    type="date"
+                >
             </div>
 
-            <div class="progress-track">
-                <div
-                    id="progressBar"
-                    class="progress-bar"
-                ></div>
+            <div class="filter-field">
+                <label for="endDateFilter">
+                    Bitiş Tarihi
+                </label>
+
+                <input
+                    id="endDateFilter"
+                    type="date"
+                >
             </div>
 
-        </section>
+            <div class="filter-field page-size-field">
+                <label for="pageSizeSelect">
+                    Sayfa Başına
+                </label>
+
+                <select id="pageSizeSelect">
+                    <option value="5">5 kayıt</option>
+                    <option value="10" selected>10 kayıt</option>
+                    <option value="20">20 kayıt</option>
+                    <option value="50">50 kayıt</option>
+                </select>
+            </div>
+
+        </div>
+
+        <div class="log-filter-actions">
+
+            <button
+                id="applyFilterButton"
+                class="primary-button filter-button"
+                type="button"
+            >
+                Filtrele
+            </button>
+
+            <button
+                id="clearFilterButton"
+                class="secondary-button filter-button"
+                type="button"
+            >
+                Temizle
+            </button>
+
+        </div>
+
+    </div>
+
+    <div
+        id="filterSummary"
+        class="filter-summary hidden"
+    ></div>
+
+    <div
+        id="loadingState"
+        class="empty-state"
+    >
+        Çalışma kayıtları yükleniyor...
+    </div>
+
+    <div
+        id="emptyState"
+        class="empty-state hidden"
+    >
+        Seçilen kriterlere uygun çalışma kaydı bulunmuyor.
+    </div>
+
+    <div
+        id="tableWrapper"
+        class="logs-table-wrapper hidden"
+    >
+
+        <table class="logs-table">
+
+            <thead>
+                <tr>
+                    <th>Tarih</th>
+                    <th>Madde</th>
+                    <th>Konu</th>
+                    <th>Yapılan Çalışma</th>
+                    <th>Süre</th>
+                    <th>Durum</th>
+                </tr>
+            </thead>
+
+            <tbody id="logsTableBody">
+            </tbody>
+
+        </table>
+
+    </div>
+
+    <div
+        id="paginationContainer"
+        class="pagination-container hidden"
+    >
+
+        <div
+            id="paginationSummary"
+            class="pagination-summary"
+        >
+        </div>
+
+        <div class="pagination-controls">
+
+            <button
+                id="firstPageButton"
+                class="pagination-button"
+                type="button"
+                aria-label="İlk sayfa"
+            >
+                «
+            </button>
+
+            <button
+                id="previousPageButton"
+                class="pagination-button"
+                type="button"
+                aria-label="Önceki sayfa"
+            >
+                ‹
+            </button>
+
+            <div
+                id="pageNumbers"
+                class="page-numbers"
+            ></div>
+
+            <button
+                id="nextPageButton"
+                class="pagination-button"
+                type="button"
+                aria-label="Sonraki sayfa"
+            >
+                ›
+            </button>
+
+            <button
+                id="lastPageButton"
+                class="pagination-button"
+                type="button"
+                aria-label="Son sayfa"
+            >
+                »
+            </button>
+
+        </div>
+
+    </div>
+
+</section>
 
         <section class="content-card">
 
