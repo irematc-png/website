@@ -1,0 +1,933 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="robots"
+        content="noindex, nofollow"
+    >
+
+    <title>Yeni Müşteri Hesabı | Drealima CRM</title>
+
+    <link
+        rel="stylesheet"
+        href="./css/crm.css?v=1"
+    >
+</head>
+
+<body class="crm-page auth-loading">
+
+    <header class="crm-header">
+
+        <a
+            href="/"
+            class="crm-logo"
+            aria-label="Drealima ana sayfasına dön"
+        >
+            <span class="crm-logo-wrapper">
+                <img
+                    src="./images/dlogo.jpeg"
+                    alt="Drealima"
+                    class="crm-logo-image"
+                >
+            </span>
+
+            <span class="crm-logo-text">
+                <strong>Drealima CRM</strong>
+                <small>Customer Workspace</small>
+            </span>
+        </a>
+
+        <div class="crm-header-user">
+
+            <div class="crm-header-user-info">
+                <strong id="userName">
+                    Kullanıcı
+                </strong>
+
+                <small id="userEmail">
+                    —
+                </small>
+            </div>
+
+            <button
+                id="logoutButton"
+                class="secondary-button"
+                type="button"
+            >
+                Çıkış Yap
+            </button>
+
+        </div>
+
+    </header>
+
+    <main class="crm-layout">
+
+        <aside class="crm-sidebar">
+
+            <nav class="crm-navigation">
+
+                <span class="crm-navigation-title">
+                    CRM
+                </span>
+
+                <a
+                    href="/portal/dashboard.html"
+                    class="crm-navigation-link"
+                >
+                    <span class="crm-navigation-icon">
+                        ⌂
+                    </span>
+
+                    Proje Takibi
+                </a>
+
+                <a
+                    href="./account.html"
+                    class="crm-navigation-link active"
+                >
+                    <span class="crm-navigation-icon">
+                        ◫
+                    </span>
+
+                    Müşteri Hesapları
+                </a>
+
+                <button
+                    class="crm-navigation-link disabled"
+                    type="button"
+                    disabled
+                >
+                    <span class="crm-navigation-icon">
+                        ◎
+                    </span>
+
+                    Kişiler
+
+                    <small>Yakında</small>
+                </button>
+
+                <button
+                    class="crm-navigation-link disabled"
+                    type="button"
+                    disabled
+                >
+                    <span class="crm-navigation-icon">
+                        ◇
+                    </span>
+
+                    Fırsatlar
+
+                    <small>Yakında</small>
+                </button>
+
+            </nav>
+
+            <div class="crm-sidebar-footer">
+                <span>Drealima CRM</span>
+                <small>
+                    Salesforce entegrasyonuna hazır
+                </small>
+            </div>
+
+        </aside>
+
+        <section class="crm-content">
+
+            <div class="crm-page-heading">
+
+                <div>
+                    <div class="crm-breadcrumb">
+                        CRM / Müşteri Hesapları / Yeni
+                    </div>
+
+                    <h1>Yeni Müşteri Hesabı</h1>
+
+                    <p>
+                        Salesforce Account kaydı için firma ve
+                        iletişim bilgilerini girin.
+                    </p>
+                </div>
+
+                <div class="crm-heading-actions">
+
+                    <button
+                        id="resetFormButton"
+                        class="secondary-button"
+                        type="button"
+                    >
+                        Formu Temizle
+                    </button>
+
+                    <button
+                        id="topSaveButton"
+                        class="primary-button"
+                        type="button"
+                    >
+                        Hesabı Kaydet
+                    </button>
+
+                </div>
+
+            </div>
+
+            <form
+                id="accountForm"
+                class="account-form"
+                novalidate
+            >
+
+                <section class="crm-form-card">
+
+                    <div class="crm-form-card-header">
+
+                        <div class="crm-section-icon">
+                            01
+                        </div>
+
+                        <div>
+                            <h2>Temel Bilgiler</h2>
+
+                            <p>
+                                Hesabın Salesforce üzerinde
+                                tanımlanacak temel kurumsal bilgileri.
+                            </p>
+                        </div>
+
+                    </div>
+
+                    <div class="crm-form-grid">
+
+                        <div class="form-group crm-field-span-2">
+
+                            <label for="accountName">
+                                Firma / Hesap Adı
+                                <span class="required-mark">*</span>
+                            </label>
+
+                            <input
+                                id="accountName"
+                                name="accountName"
+                                type="text"
+                                maxlength="255"
+                                autocomplete="organization"
+                                placeholder="Örn. Drealima Teknoloji A.Ş."
+                                required
+                            >
+
+                            <small class="field-helper">
+                                Salesforce alanı: Account.Name
+                            </small>
+
+                        </div>
+
+                        <div class="form-group">
+
+                            <label for="accountType">
+                                Hesap Türü
+                            </label>
+
+                            <select
+                                id="accountType"
+                                name="accountType"
+                            >
+                                <option value="">
+                                    Seçiniz
+                                </option>
+
+                                <option value="Prospect">
+                                    Potansiyel Müşteri
+                                </option>
+
+                                <option value="Customer">
+                                    Müşteri
+                                </option>
+
+                                <option value="Partner">
+                                    İş Ortağı
+                                </option>
+
+                                <option value="Vendor">
+                                    Tedarikçi
+                                </option>
+
+                                <option value="Other">
+                                    Diğer
+                                </option>
+                            </select>
+
+                            <small class="field-helper">
+                                Salesforce alanı: Account.Type
+                            </small>
+
+                        </div>
+
+                        <div class="form-group">
+
+                            <label for="industry">
+                                Sektör
+                            </label>
+
+                            <select
+                                id="industry"
+                                name="industry"
+                            >
+                                <option value="">
+                                    Seçiniz
+                                </option>
+
+                                <option value="Manufacturing">
+                                    Üretim
+                                </option>
+
+                                <option value="Technology">
+                                    Teknoloji
+                                </option>
+
+                                <option value="Automotive">
+                                    Otomotiv
+                                </option>
+
+                                <option value="Retail">
+                                    Perakende
+                                </option>
+
+                                <option value="Construction">
+                                    İnşaat
+                                </option>
+
+                                <option value="Tourism">
+                                    Turizm
+                                </option>
+
+                                <option value="Finance">
+                                    Finans
+                                </option>
+
+                                <option value="Healthcare">
+                                    Sağlık
+                                </option>
+
+                                <option value="Other">
+                                    Diğer
+                                </option>
+                            </select>
+
+                            <small class="field-helper">
+                                Salesforce alanı: Account.Industry
+                            </small>
+
+                        </div>
+
+                        <div class="form-group">
+
+                            <label for="taxNumber">
+                                Vergi Numarası
+                            </label>
+
+                            <input
+                                id="taxNumber"
+                                name="taxNumber"
+                                type="text"
+                                inputmode="numeric"
+                                maxlength="11"
+                                placeholder="Vergi numarası"
+                            >
+
+                        </div>
+
+                        <div class="form-group">
+
+                            <label for="taxOffice">
+                                Vergi Dairesi
+                            </label>
+
+                            <input
+                                id="taxOffice"
+                                name="taxOffice"
+                                type="text"
+                                maxlength="120"
+                                placeholder="Vergi dairesi"
+                            >
+
+                        </div>
+
+                        <div class="form-group">
+
+                            <label for="employeeCount">
+                                Çalışan Sayısı
+                            </label>
+
+                            <input
+                                id="employeeCount"
+                                name="employeeCount"
+                                type="number"
+                                min="0"
+                                step="1"
+                                inputmode="numeric"
+                                placeholder="Örn. 250"
+                            >
+
+                            <small class="field-helper">
+                                Salesforce alanı: NumberOfEmployees
+                            </small>
+
+                        </div>
+
+                        <div class="form-group">
+
+                            <label for="annualRevenue">
+                                Yıllık Ciro
+                            </label>
+
+                            <div class="crm-money-input">
+
+                                <input
+                                    id="annualRevenue"
+                                    name="annualRevenue"
+                                    type="number"
+                                    min="0"
+                                    step="0.01"
+                                    inputmode="decimal"
+                                    placeholder="0,00"
+                                >
+
+                                <select
+                                    id="revenueCurrency"
+                                    name="revenueCurrency"
+                                    aria-label="Para birimi"
+                                >
+                                    <option value="TRY">
+                                        TRY
+                                    </option>
+
+                                    <option value="USD">
+                                        USD
+                                    </option>
+
+                                    <option value="EUR">
+                                        EUR
+                                    </option>
+                                </select>
+
+                            </div>
+
+                            <small class="field-helper">
+                                Salesforce alanı: AnnualRevenue
+                            </small>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+                <section class="crm-form-card">
+
+                    <div class="crm-form-card-header">
+
+                        <div class="crm-section-icon">
+                            02
+                        </div>
+
+                        <div>
+                            <h2>İletişim Bilgileri</h2>
+
+                            <p>
+                                Firmanın ana telefon, e-posta ve
+                                internet sitesi bilgileri.
+                            </p>
+                        </div>
+
+                    </div>
+
+                    <div class="crm-form-grid">
+
+                        <div class="form-group">
+
+                            <label for="phone">
+                                Telefon
+                            </label>
+
+                            <input
+                                id="phone"
+                                name="phone"
+                                type="tel"
+                                maxlength="30"
+                                autocomplete="tel"
+                                placeholder="+90 252 000 00 00"
+                            >
+
+                        </div>
+
+                        <div class="form-group">
+
+                            <label for="email">
+                                Kurumsal E-posta
+                            </label>
+
+                            <input
+                                id="email"
+                                name="email"
+                                type="email"
+                                maxlength="150"
+                                autocomplete="email"
+                                placeholder="info@firma.com"
+                            >
+
+                        </div>
+
+                        <div class="form-group">
+
+                            <label for="website">
+                                Web Sitesi
+                            </label>
+
+                            <input
+                                id="website"
+                                name="website"
+                                type="url"
+                                maxlength="255"
+                                autocomplete="url"
+                                placeholder="https://www.firma.com"
+                            >
+
+                        </div>
+
+                        <div class="form-group">
+
+                            <label for="fax">
+                                Faks
+                            </label>
+
+                            <input
+                                id="fax"
+                                name="fax"
+                                type="tel"
+                                maxlength="30"
+                                placeholder="+90 252 000 00 01"
+                            >
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+                <section class="crm-form-card">
+
+                    <div class="crm-form-card-header">
+
+                        <div class="crm-section-icon">
+                            03
+                        </div>
+
+                        <div>
+                            <h2>Fatura Adresi</h2>
+
+                            <p>
+                                Salesforce Billing Address alanlarında
+                                kullanılacak adres bilgileri.
+                            </p>
+                        </div>
+
+                        <button
+                            id="copyBillingToShippingButton"
+                            class="crm-inline-button"
+                            type="button"
+                        >
+                            Sevk adresine kopyala
+                        </button>
+
+                    </div>
+
+                    <div class="crm-form-grid">
+
+                        <div class="form-group crm-field-span-2">
+
+                            <label for="billingStreet">
+                                Adres
+                            </label>
+
+                            <textarea
+                                id="billingStreet"
+                                name="billingStreet"
+                                rows="3"
+                                maxlength="255"
+                                autocomplete="street-address"
+                                placeholder="Mahalle, cadde, sokak ve bina bilgisi"
+                            ></textarea>
+
+                        </div>
+
+                        <div class="form-group">
+
+                            <label for="billingCountry">
+                                Ülke
+                            </label>
+
+                            <select
+                                id="billingCountry"
+                                name="billingCountry"
+                            >
+                                <option value="Türkiye" selected>
+                                    Türkiye
+                                </option>
+
+                                <option value="Germany">
+                                    Almanya
+                                </option>
+
+                                <option value="Netherlands">
+                                    Hollanda
+                                </option>
+
+                                <option value="United Kingdom">
+                                    Birleşik Krallık
+                                </option>
+
+                                <option value="United States">
+                                    Amerika Birleşik Devletleri
+                                </option>
+                            </select>
+
+                        </div>
+
+                        <div class="form-group">
+
+                            <label for="billingState">
+                                İl
+                            </label>
+
+                            <input
+                                id="billingState"
+                                name="billingState"
+                                type="text"
+                                maxlength="80"
+                                placeholder="Örn. Muğla"
+                            >
+
+                        </div>
+
+                        <div class="form-group">
+
+                            <label for="billingCity">
+                                İlçe / Şehir
+                            </label>
+
+                            <input
+                                id="billingCity"
+                                name="billingCity"
+                                type="text"
+                                maxlength="80"
+                                placeholder="Örn. Milas"
+                            >
+
+                        </div>
+
+                        <div class="form-group">
+
+                            <label for="billingPostalCode">
+                                Posta Kodu
+                            </label>
+
+                            <input
+                                id="billingPostalCode"
+                                name="billingPostalCode"
+                                type="text"
+                                maxlength="20"
+                                placeholder="48200"
+                            >
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+                <section class="crm-form-card">
+
+                    <div class="crm-form-card-header">
+
+                        <div class="crm-section-icon">
+                            04
+                        </div>
+
+                        <div>
+                            <h2>Sevk Adresi</h2>
+
+                            <p>
+                                Fatura adresinden farklıysa sevk
+                                adresini girin.
+                            </p>
+                        </div>
+
+                    </div>
+
+                    <div class="crm-form-grid">
+
+                        <div class="form-group crm-field-span-2">
+
+                            <label for="shippingStreet">
+                                Adres
+                            </label>
+
+                            <textarea
+                                id="shippingStreet"
+                                name="shippingStreet"
+                                rows="3"
+                                maxlength="255"
+                                placeholder="Mahalle, cadde, sokak ve bina bilgisi"
+                            ></textarea>
+
+                        </div>
+
+                        <div class="form-group">
+
+                            <label for="shippingCountry">
+                                Ülke
+                            </label>
+
+                            <select
+                                id="shippingCountry"
+                                name="shippingCountry"
+                            >
+                                <option value="Türkiye" selected>
+                                    Türkiye
+                                </option>
+
+                                <option value="Germany">
+                                    Almanya
+                                </option>
+
+                                <option value="Netherlands">
+                                    Hollanda
+                                </option>
+
+                                <option value="United Kingdom">
+                                    Birleşik Krallık
+                                </option>
+
+                                <option value="United States">
+                                    Amerika Birleşik Devletleri
+                                </option>
+                            </select>
+
+                        </div>
+
+                        <div class="form-group">
+
+                            <label for="shippingState">
+                                İl
+                            </label>
+
+                            <input
+                                id="shippingState"
+                                name="shippingState"
+                                type="text"
+                                maxlength="80"
+                                placeholder="Örn. Muğla"
+                            >
+
+                        </div>
+
+                        <div class="form-group">
+
+                            <label for="shippingCity">
+                                İlçe / Şehir
+                            </label>
+
+                            <input
+                                id="shippingCity"
+                                name="shippingCity"
+                                type="text"
+                                maxlength="80"
+                                placeholder="Örn. Milas"
+                            >
+
+                        </div>
+
+                        <div class="form-group">
+
+                            <label for="shippingPostalCode">
+                                Posta Kodu
+                            </label>
+
+                            <input
+                                id="shippingPostalCode"
+                                name="shippingPostalCode"
+                                type="text"
+                                maxlength="20"
+                                placeholder="48200"
+                            >
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+                <section class="crm-form-card">
+
+                    <div class="crm-form-card-header">
+
+                        <div class="crm-section-icon">
+                            05
+                        </div>
+
+                        <div>
+                            <h2>Ek Bilgiler</h2>
+
+                            <p>
+                                Hesap kaynağı ve açıklama
+                                bilgilerini tamamlayın.
+                            </p>
+                        </div>
+
+                    </div>
+
+                    <div class="crm-form-grid">
+
+                        <div class="form-group">
+
+                            <label for="accountOwner">
+                                Hesap Sahibi
+                            </label>
+
+                            <input
+                                id="accountOwner"
+                                name="accountOwner"
+                                type="text"
+                                maxlength="120"
+                                placeholder="Salesforce kullanıcısı"
+                                disabled
+                            >
+
+                            <small class="field-helper">
+                                Entegrasyondan sonra Salesforce’tan alınacak.
+                            </small>
+
+                        </div>
+
+                        <div class="form-group">
+
+                            <label for="leadSource">
+                                Müşteri Kaynağı
+                            </label>
+
+                            <select
+                                id="leadSource"
+                                name="leadSource"
+                            >
+                                <option value="">
+                                    Seçiniz
+                                </option>
+
+                                <option value="Referral">
+                                    Referans
+                                </option>
+
+                                <option value="Web">
+                                    Web Sitesi
+                                </option>
+
+                                <option value="Social Media">
+                                    Sosyal Medya
+                                </option>
+
+                                <option value="Event">
+                                    Etkinlik
+                                </option>
+
+                                <option value="Existing Customer">
+                                    Mevcut Müşteri
+                                </option>
+
+                                <option value="Other">
+                                    Diğer
+                                </option>
+                            </select>
+
+                        </div>
+
+                        <div class="form-group crm-field-span-2">
+
+                            <label for="description">
+                                Açıklama
+                            </label>
+
+                            <textarea
+                                id="description"
+                                name="description"
+                                rows="5"
+                                maxlength="2000"
+                                placeholder="Firma hakkında ek notlar..."
+                            ></textarea>
+
+                            <div class="crm-character-counter">
+                                <span id="descriptionCharacterCount">
+                                    0
+                                </span>
+                                / 2000
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+                <div
+                    id="formMessage"
+                    class="crm-form-message hidden"
+                    aria-live="polite"
+                ></div>
+
+                <div class="crm-form-actions">
+
+                    <button
+                        id="cancelButton"
+                        class="secondary-button"
+                        type="button"
+                    >
+                        Vazgeç
+                    </button>
+
+                    <button
+                        id="saveDraftButton"
+                        class="crm-outline-button"
+                        type="button"
+                    >
+                        Taslak Olarak Hazırla
+                    </button>
+
+                    <button
+                        id="saveAccountButton"
+                        class="primary-button"
+                        type="submit"
+                    >
+                        Hesabı Kaydet
+                    </button>
+
+                </div>
+
+            </form>
+
+        </section>
+
+    </main>
+
+    <script
+        type="module"
+        src="./js/account.js?v=1"
+    ></script>
+
+</body>
+</html>
