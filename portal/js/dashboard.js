@@ -18,6 +18,14 @@ import {
     where
 } from "https://www.gstatic.com/firebasejs/12.17.0/firebase-firestore.js";
 
+<script
+    src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js">
+</script>
+
+<script
+    type="module"
+    src="./js/dashboard.js?v=14">
+</script>
 /* =====================================================
    DOM
 ===================================================== */
@@ -311,141 +319,295 @@ exportLogsButton.addEventListener(
     exportFilteredLogs
 );
 
+
+
 function exportFilteredLogs() {
     if (
         !filteredLogs ||
         filteredLogs.length === 0
     ) {
         alert(
-            "Dışa aktarılacak çalışma kaydı bulunmuyor."
+            "Excel'e aktarılacak çalışma kaydı bulunmuyor."
         );
 
         return;
     }
 
-    const headers = [
-        "Tarih",
-        "Madde",
-        "Konu",
-        "Yapılan Çalışma",
-        "Sonraki Adım",
-        "Süre (Dakika)",
-        "Süre",
-        "Durum"
-    ];
+    if (typeof XLSX === "undefined") {
+        console.error(
+            "SheetJS yüklenemedi."
+        );
 
-    const rows =
+        alert(
+            "Excel oluşturma bileşeni yüklenemedi. Sayfayı yenileyip tekrar deneyin."
+        );
+
+        return;
+    }
+
+    const totalMinutes =
+        filteredLogs.reduce(
+            (total, log) =>
+                total +
+                getLogDurationMinutes(log),
+            0
+        );
+
+    const exportRows =
         filteredLogs.map(
             (log) => {
                 const durationMinutes =
-                    getLogDurationMinutes(
-                        log
-                    );
+                    getLogDurationMinutes(log);
 
-                return [
-                    log.workDate || "",
-                    log.itemNumber || "",
-                    log.title || "",
-                    log.description || "",
-                    log.nextStep || "",
-                    durationMinutes,
-                    formatDuration(
-                        durationMinutes
-                    ),
-                    getStatusText(
-                        log.status
-                    )
-                ];
+                return {
+                    "Tarih":
+                        formatDateForExcel(
+                            log.workDate
+                        ),
+
+                    "Madde":
+                        log.itemNumber
+                            ? `Madde ${log.itemNumber}`
+                            : "Genel",
+
+                    "Konu":
+                        sanitizeExcelValue(
+                            log.title || ""
+                        ),
+
+                    "Yapılan Çalışma":
+                        sanitizeExcelValue(
+                            log.description || ""
+                        ),
+
+                    "Sonraki Adım":
+                        sanitizeExcelValue(
+                            log.nextStep || ""
+                        ),
+
+                    "Süre":
+                        formatDuration(
+                            durationMinutes
+                        ),
+
+                    "Süre (Dakika)":
+                        durationMinutes,
+
+                    "Durum":
+                        getStatusText(
+                            log.status
+                        )
+                };
             }
         );
-
-    const csvRows = [
-        headers,
-        ...rows
-    ];
-
-    const csvContent =
-        csvRows
-            .map(
-                (row) =>
-                    row
-                        .map(
-                            escapeCsvValue
-                        )
-                        .join(";")
-            )
-            .join("\r\n");
 
     /*
-     * UTF-8 BOM:
-     * Excel'de Türkçe karakterlerin
-     * düzgün görünmesini sağlar.
+     * Ana çalışma sayfası
      */
-    const bom = "\uFEFF";
-
-    const blob =
-        new Blob(
-            [
-                bom +
-                csvContent
-            ],
-            {
-                type:
-                    "text/csv;charset=utf-8;"
-            }
+    const worksheet =
+        XLSX.utils.json_to_sheet(
+            exportRows
         );
 
-    const url =
-        URL.createObjectURL(
-            blob
+    /*
+     * Kolon genişlikleri
+     */
+    worksheet["!cols"] = [
+        { wch: 14 }, // Tarih
+        { wch: 12 }, // Madde
+        { wch: 28 }, // Konu
+        { wch: 55 }, // Yapılan Çalışma
+        { wch: 40 }, // Sonraki Adım
+        { wch: 22 }, // Süre
+        { wch: 16 }, // Süre dakika
+        { wch: 18 }  // Durum
+    ];
+
+    /*
+     * Excel autofilter
+     */
+    if (exportRows.length > 0) {
+        worksheet["!autofilter"] = {
+            ref:
+                `A1:H${exportRows.length + 1}`
+        };
+    }
+
+    /*
+     * Özet sheet
+     */
+    const summaryRows = [
+        [
+            "Drealima Çalışma Raporu"
+        ],
+
+        [],
+
+        [
+            "Müşteri",
+            currentProject?.clientName ||
+            ""
+        ],
+
+        [
+            "Proje",
+            currentProject?.name ||
+            ""
+        ],
+
+        [
+            "Başlangıç Tarihi",
+            startDateFilter.value
+                ? formatDateForExcel(
+                    startDateFilter.value
+                )
+                : "Tümü"
+        ],
+
+        [
+            "Bitiş Tarihi",
+            endDateFilter.value
+                ? formatDateForExcel(
+                    endDateFilter.value
+                )
+                : "Tümü"
+        ],
+
+        [
+            "Toplam Kayıt",
+            filteredLogs.length
+        ],
+
+        [
+            "Toplam Çalışma Süresi",
+            formatDuration(
+                totalMinutes
+            )
+        ],
+
+        [
+            "Toplam Dakika",
+            totalMinutes
+        ],
+
+        [
+            "Rapor Oluşturma Tarihi",
+            formatCurrentDateTime()
+        ]
+    ];
+
+    const summaryWorksheet =
+        XLSX.utils.aoa_to_sheet(
+            summaryRows
         );
 
-    const link =
-        document.createElement(
-            "a"
-        );
+    summaryWorksheet["!cols"] = [
+        { wch: 28 },
+        { wch: 45 }
+    ];
 
-    link.href = url;
+    /*
+     * Workbook
+     */
+    const workbook =
+        XLSX.utils.book_new();
 
-    link.download =
-        buildExportFileName();
-
-    document.body.appendChild(
-        link
+    XLSX.utils.book_append_sheet(
+        workbook,
+        summaryWorksheet,
+        "Rapor Özeti"
     );
 
-    link.click();
-
-    document.body.removeChild(
-        link
+    XLSX.utils.book_append_sheet(
+        workbook,
+        worksheet,
+        "Çalışma Logları"
     );
 
-    URL.revokeObjectURL(url);
+    const fileName =
+        buildExcelFileName();
+
+    XLSX.writeFile(
+        workbook,
+        fileName
+    );
 }
 
-function escapeCsvValue(value) {
+function formatDateForExcel(
+    dateValue
+) {
+    if (!dateValue) {
+        return "";
+    }
+
+    const date =
+        new Date(
+            `${dateValue}T12:00:00`
+        );
+
+    if (
+        Number.isNaN(
+            date.getTime()
+        )
+    ) {
+        return dateValue;
+    }
+
+    return new Intl.DateTimeFormat(
+        "tr-TR",
+        {
+            day: "2-digit",
+            month: "2-digit",
+            year: "numeric"
+        }
+    ).format(date);
+}
+
+function formatCurrentDateTime() {
+    return new Intl.DateTimeFormat(
+        "tr-TR",
+        {
+            day: "2-digit",
+            month: "2-digit",
+            year: "numeric",
+            hour: "2-digit",
+            minute: "2-digit"
+        }
+    ).format(
+        new Date()
+    );
+}
+
+function sanitizeExcelValue(
+    value
+) {
     const text =
         String(
             value ?? ""
         );
 
     /*
-     * Excel/CSV formula injection
-     * riskine karşı hücre başındaki
-     * formül karakterlerini etkisizleştir.
+     * Excel formula injection
+     * riskini azaltır.
      */
-    const protectedText =
-        /^[=+\-@]/.test(text)
-            ? `'${text}`
-            : text;
+    if (
+        /^[=+\-@]/.test(
+            text
+        )
+    ) {
+        return `'${text}`;
+    }
 
-    return `"${protectedText.replace(
-        /"/g,
-        '""'
-    )}"`;
+    return text;
 }
 
-function buildExportFileName() {
+function buildExcelFileName() {
+    const customerName =
+        sanitizeFileName(
+            currentProject?.clientName ||
+            "Musteri"
+        );
+
     const startDate =
         startDateFilter.value;
 
@@ -453,7 +615,7 @@ function buildExportFileName() {
         endDateFilter.value;
 
     let period =
-        "tum-kayitlar";
+        "Tum-Kayitlar";
 
     if (
         startDate &&
@@ -463,16 +625,33 @@ function buildExportFileName() {
             `${startDate}_${endDate}`;
     } else if (startDate) {
         period =
-            `${startDate}_sonrasi`;
+            `${startDate}_Sonrasi`;
     } else if (endDate) {
         period =
-            `${endDate}_oncesi`;
+            `${endDate}_Oncesi`;
     }
 
     return (
-        `drealima-calisma-loglari-` +
-        `${period}.csv`
+        `${customerName}_Calisma_Raporu_` +
+        `${period}.xlsx`
     );
+}
+
+function sanitizeFileName(
+    value
+) {
+    return String(
+        value || ""
+    )
+        .replace(
+            /[<>:"/\\|?*]/g,
+            ""
+        )
+        .replace(
+            /\s+/g,
+            "_"
+        )
+        .trim();
 }
 
 /* =====================================================

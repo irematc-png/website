@@ -2099,3 +2099,33 @@ body.customer-dashboard .log-filter-main {
         width: 100%;
     }
 }
+
+body.customer-dashboard .export-button {
+    border: 1px solid #d5dfcf;
+    color: #46654d;
+    background: #ffffff;
+}
+
+body.customer-dashboard .export-button:hover {
+    border-color: #98b28e;
+    color: #ffffff;
+    background:
+        linear-gradient(
+            135deg,
+            #527f5b,
+            #84aa67
+        );
+}
+
+@media (max-width: 680px) {
+    body.customer-dashboard
+    .log-filter-actions {
+        grid-template-columns:
+            1fr 1fr;
+    }
+
+    body.customer-dashboard
+    .export-button {
+        grid-column: 1 / -1;
+    }
+}
