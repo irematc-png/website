@@ -128,6 +128,10 @@ const lastPageButton =
 const pageNumbers =
     document.getElementById("pageNumbers");
 
+const exportLogsButton =
+    document.getElementById(
+        "exportLogsButton"
+    );
 /* =====================================================
    STATE
 ===================================================== */
@@ -301,6 +305,175 @@ quickFilterButtons.forEach(
         );
     }
 );
+
+exportLogsButton.addEventListener(
+    "click",
+    exportFilteredLogs
+);
+
+function exportFilteredLogs() {
+    if (
+        !filteredLogs ||
+        filteredLogs.length === 0
+    ) {
+        alert(
+            "Dışa aktarılacak çalışma kaydı bulunmuyor."
+        );
+
+        return;
+    }
+
+    const headers = [
+        "Tarih",
+        "Madde",
+        "Konu",
+        "Yapılan Çalışma",
+        "Sonraki Adım",
+        "Süre (Dakika)",
+        "Süre",
+        "Durum"
+    ];
+
+    const rows =
+        filteredLogs.map(
+            (log) => {
+                const durationMinutes =
+                    getLogDurationMinutes(
+                        log
+                    );
+
+                return [
+                    log.workDate || "",
+                    log.itemNumber || "",
+                    log.title || "",
+                    log.description || "",
+                    log.nextStep || "",
+                    durationMinutes,
+                    formatDuration(
+                        durationMinutes
+                    ),
+                    getStatusText(
+                        log.status
+                    )
+                ];
+            }
+        );
+
+    const csvRows = [
+        headers,
+        ...rows
+    ];
+
+    const csvContent =
+        csvRows
+            .map(
+                (row) =>
+                    row
+                        .map(
+                            escapeCsvValue
+                        )
+                        .join(";")
+            )
+            .join("\r\n");
+
+    /*
+     * UTF-8 BOM:
+     * Excel'de Türkçe karakterlerin
+     * düzgün görünmesini sağlar.
+     */
+    const bom = "\uFEFF";
+
+    const blob =
+        new Blob(
+            [
+                bom +
+                csvContent
+            ],
+            {
+                type:
+                    "text/csv;charset=utf-8;"
+            }
+        );
+
+    const url =
+        URL.createObjectURL(
+            blob
+        );
+
+    const link =
+        document.createElement(
+            "a"
+        );
+
+    link.href = url;
+
+    link.download =
+        buildExportFileName();
+
+    document.body.appendChild(
+        link
+    );
+
+    link.click();
+
+    document.body.removeChild(
+        link
+    );
+
+    URL.revokeObjectURL(url);
+}
+
+function escapeCsvValue(value) {
+    const text =
+        String(
+            value ?? ""
+        );
+
+    /*
+     * Excel/CSV formula injection
+     * riskine karşı hücre başındaki
+     * formül karakterlerini etkisizleştir.
+     */
+    const protectedText =
+        /^[=+\-@]/.test(text)
+            ? `'${text}`
+            : text;
+
+    return `"${protectedText.replace(
+        /"/g,
+        '""'
+    )}"`;
+}
+
+function buildExportFileName() {
+    const startDate =
+        startDateFilter.value;
+
+    const endDate =
+        endDateFilter.value;
+
+    let period =
+        "tum-kayitlar";
+
+    if (
+        startDate &&
+        endDate
+    ) {
+        period =
+            `${startDate}_${endDate}`;
+    } else if (startDate) {
+        period =
+            `${startDate}_sonrasi`;
+    } else if (endDate) {
+        period =
+            `${endDate}_oncesi`;
+    }
+
+    return (
+        `drealima-calisma-loglari-` +
+        `${period}.csv`
+    );
+}
 
 /* =====================================================
    PAGINATION EVENTS
