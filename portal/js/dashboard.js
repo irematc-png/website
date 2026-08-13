@@ -18,14 +18,6 @@ import {
     where
 } from "https://www.gstatic.com/firebasejs/12.17.0/firebase-firestore.js";
 
-<script
-    src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js">
-</script>
-
-<script
-    type="module"
-    src="./js/dashboard.js?v=14">
-</script>
 /* =====================================================
    DOM
 ===================================================== */
