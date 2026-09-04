@@ -61,9 +61,10 @@ header {
   top: 0;
   z-index: 1000;
   height: 88px;
-  display: flex;
+  display: grid;
+  grid-template-columns: minmax(180px, 1fr) auto minmax(540px, 1fr);
   align-items: center;
-  justify-content: space-between;
+  column-gap: 28px;
   padding: 16px 60px;
   background: rgba(8, 15, 28, 0.76);
   backdrop-filter: blur(18px);
@@ -73,6 +74,7 @@ header {
 .logo {
   display: flex;
   align-items: center;
+  justify-self: start;
   text-decoration: none;
 }
 
@@ -84,10 +86,10 @@ header {
 }
 
 .nav-brand {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
+  position: static;
+  transform: none;
   text-align: center;
+  white-space: nowrap;
 }
 
 .brand-name {
@@ -106,6 +108,7 @@ nav {
   display: flex;
   gap: 22px;
   align-items: center;
+  justify-self: end;
 }
 
 nav a {
@@ -132,12 +135,28 @@ nav a:hover {
 .lang-switch {
   display: flex;
   align-items: center;
-  gap: 7px;
+  gap: 4px;
+  margin-left: 2px;
+  padding-left: 12px;
+  border-left: 1px solid rgba(255,255,255,0.14);
+}
+
+.lang-switch a {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 7px 6px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.4px;
 }
 
 .lang-switch img {
   width: 24px;
   height: 15px;
+  object-fit: cover;
+  border-radius: 2px;
+  box-shadow: 0 0 0 1px rgba(255,255,255,0.16);
 }
 
 .instagram-icon {
@@ -443,9 +462,22 @@ footer {
 }
 
 /* RESPONSIVE */
+@media (max-width: 1500px) and (min-width: 769px) {
+  header {
+    grid-template-columns: auto 1fr;
+    padding-inline: 32px;
+  }
+
+  .nav-brand {
+    display: none;
+  }
+}
+
 @media (max-width: 768px) {
   header {
     height: 74px;
+    display: flex;
+    justify-content: space-between;
     padding: 12px 18px;
   }
 
@@ -478,6 +510,14 @@ footer {
 
   nav.active {
     display: flex;
+  }
+
+  .lang-switch {
+    width: 100%;
+    margin: 4px 0 0;
+    padding: 12px 0 0;
+    border-left: 0;
+    border-top: 1px solid rgba(255,255,255,0.12);
   }
 
   .hero {
@@ -536,25 +576,21 @@ footer {
     <a href="#services">Hizmetler</a>
     <a href="#portfolio">Portföy</a>
     <a href="#contact">İletişim</a>
-	<a
-    href="/portal/"
-    class="client-portal-button"
->
-    Müşteri Girişi
-</a>
+    <a href="/portal/" class="client-portal-button">Müşteri Girişi</a>
 
-    
+    <div class="lang-switch" aria-label="Dil seçimi">
+      <a href="en.html" lang="en" title="English" aria-label="English">
+        <img src="en.png" alt=""> EN
+      </a>
+      <a href="de.html" lang="de" title="Deutsch" aria-label="Deutsch">
+        <img src="de.png" alt=""> DE
+      </a>
+    </div>
   </nav>
   
 </header>
 
 <!--
-<div class="lang-switch">
-      <a href="en.html"><img src="en.png" alt="English"></a>
-      <a href="index.html"><img src="tr.png" alt="Türkçe"></a>
-      <a href="de.html"><img src="de.png" alt="Deutsch"></a>
-    </div>
-
     <a href="https://www.instagram.com/drealima_software/" target="_blank" class="instagram-icon">
       <i class="fa-brands fa-instagram"></i>
     </a>-->
