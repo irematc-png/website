@@ -64,7 +64,7 @@ header {
   z-index: 1000;
   height: 88px;
   display: grid;
-  grid-template-columns: 180px minmax(300px, 1fr) auto;
+  grid-template-columns: minmax(220px, 1fr) auto;
   align-items: center;
   column-gap: 28px;
   padding: 16px 60px;
@@ -76,34 +76,25 @@ header {
 .logo {
   display: flex;
   align-items: center;
+  gap: 12px;
   justify-self: start;
   text-decoration: none;
 }
 
 .logo img {
-  height: 105px;
-  width: auto;
+  width: 52px;
+  height: 52px;
+  object-fit: contain;
   display: block;
   filter: drop-shadow(0 8px 22px rgba(0,0,0,0.35));
 }
 
-.nav-brand {
-  position: static;
-  transform: none;
-  text-align: center;
-  white-space: nowrap;
-}
-
-.brand-name {
-  font-size: 15px;
+.logo-text {
+  color: #ffffff;
+  font-size: 17px;
   font-weight: 800;
-  letter-spacing: 2px;
-}
-
-.brand-tag {
-  font-size: 10px;
-  color: rgba(255,255,255,0.62);
-  letter-spacing: 1.2px;
+  letter-spacing: 2.4px;
+  white-space: nowrap;
 }
 
 nav {
@@ -485,10 +476,6 @@ footer {
     grid-template-columns: auto 1fr;
     padding-inline: 32px;
   }
-
-  .nav-brand {
-    display: none;
-  }
 }
 
 @media (max-width: 768px) {
@@ -500,11 +487,17 @@ footer {
   }
 
   .logo img {
-    height: 50px;
+    width: 44px;
+    height: 44px;
   }
 
-  .nav-brand {
-    display: none;
+  .logo {
+    gap: 9px;
+  }
+
+  .logo-text {
+    font-size: 14px;
+    letter-spacing: 1.7px;
   }
 
   .hamburger {
@@ -579,13 +572,9 @@ footer {
 
 <header>
   <a href="#home" class="logo">
-    <img src="logo.png" alt="Drealima Logo">
+    <img src="minilogo.png" alt="Drealima Logo">
+    <span class="logo-text">DREALIMA</span>
   </a>
-
-  <div class="nav-brand">
-    <div class="brand-name">DREALIMA TECHNOLOGY & SOLUTIONS</div>
-    <div class="brand-tag">Beyond Imagination Until Reality</div>
-  </div>
 
   <div class="hamburger" onclick="toggleMenu()">☰</div>
 
