@@ -60,8 +60,12 @@ header {
 }
 
 .logo img {
-  height: 105px;
   width: auto;
+  height: auto;
+  max-height: 62px;
+  max-width: 190px;
+  object-fit: contain;
+  object-position: left center;
   display: block;
   filter: drop-shadow(0 8px 22px rgba(0,0,0,0.35));
 }
@@ -116,6 +120,9 @@ nav a:hover {
   display: flex;
   align-items: center;
   gap: 7px;
+  position: absolute;
+  right: 60px;
+  bottom: 5px;
 }
 
 .lang-switch img {
@@ -392,7 +399,8 @@ nav a:hover {
 .whatsapp-btn {
   position: fixed;
   bottom: 25px;
-  right: 25px;
+  left: 25px;
+  right: auto;
   display: flex;
   align-items: center;
   gap: 10px;
@@ -463,6 +471,14 @@ footer {
     display: flex;
   }
 
+  .lang-switch {
+    position: static;
+    margin-top: 8px;
+    padding-top: 10px;
+    border-top: 1px solid rgba(255,255,255,0.12);
+    width: 100%;
+  }
+
   .hero {
     margin: 35px auto 50px;
     padding: 54px 18px;
@@ -495,7 +511,101 @@ footer {
 
   .whatsapp-btn {
     padding: 14px;
+    left: 12px;
+    right: auto;
   }
+}
+/* Desktop navigation: equal spacing, right aligned, independent second row */
+.client-portal-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 7px 12px;
+  border: 1px solid rgba(255,255,255,0.45);
+  border-radius: 999px;
+  color: #fff;
+  text-decoration: none;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1;
+  white-space: nowrap;
+  transition: .2s ease;
+}
+.client-portal-button:hover { color: #081a3f; background: #fff; }
+@media (min-width: 769px) {
+  header nav {
+    display: grid;
+    grid-template-columns: repeat(4, max-content);
+    justify-content: end;
+    justify-items: start;
+    align-content: start;
+    column-gap: 24px;
+    row-gap: 0;
+    max-width: none;
+    position: relative;
+    padding-bottom: 35px;
+  }
+  header nav > a:nth-child(-n+4) { padding-left: 0; padding-right: 0; }
+  header nav > a:nth-child(1) { grid-column: 1; grid-row: 1; }
+  header nav > a:nth-child(2) { grid-column: 2; grid-row: 1; }
+  header nav > a:nth-child(3) { grid-column: 3; grid-row: 1; }
+  header nav > a:nth-child(4) { grid-column: 4; grid-row: 1; }
+  header nav > .client-portal-button {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+  }
+  header nav > .lang-switch {
+    position: absolute;
+    right: 125px;
+    bottom: 2px;
+    margin: 0;
+    padding: 0;
+    gap: 5px;
+    flex-basis: auto;
+    width: auto;
+  }
+  header nav > .lang-switch a { padding: 4px 2px; }
+  header nav > .lang-switch img { width: 20px; height: 13px; }
+}
+
+/* Match the Turkish page: rectangular light flag frames and aligned second row. */
+header nav .lang-switch { gap: 13px; }
+header nav .lang-switch a {
+  width: 30px;
+  height: 23px;
+  padding: 3px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(235, 244, 255, 0.75);
+  border-radius: 6px;
+  background: rgba(235, 244, 255, 0.14);
+}
+header nav .lang-switch img {
+  width: 20px;
+  height: 13px;
+  object-fit: fill;
+  border-radius: 1px;
+}
+@media (min-width: 769px) {
+  header nav > .lang-switch { bottom: 7px; }
+  header nav > .client-portal-button { bottom: 5px; }
+}
+
+/* Language codes beside flags */
+header nav .lang-switch a {
+  width: auto;
+  min-width: 48px;
+  gap: 5px;
+  padding: 3px 6px;
+  white-space: nowrap;
+}
+header nav .lang-switch .lang-code {
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1;
+  color: rgba(255,255,255,.85);
 }
 </style>
 <link rel="stylesheet" href="avatar.css">
@@ -520,16 +630,17 @@ footer {
     <a href="#services">Leistungen</a>
     <a href="#portfolio">Portfolio</a>
     <a href="#contact">Kontakt</a>
+    <a href="https://drealimaofficial.com/portal/dashboard.html" class="client-portal-button">Kundenlogin</a>
 
-    <div class="lang-switch">
-      <a href="en.html"><img src="en.png" alt="English"></a>
-      <a href="index.html"><img src="tr.png" alt="Türkçe"></a>
-      <a href="de.html"><img src="de.png" alt="Deutsch"></a>
+    <div class="lang-switch" aria-label="Sprachauswahl">
+      <a href="en.html" lang="en" title="English" aria-label="English">
+        <img src="en.png" alt=""> <span class="lang-code">EN</span>
+      </a>
+      <a href="index.html" lang="tr" title="Türkçe" aria-label="Türkçe">
+        <img src="tr.png" alt=""> <span class="lang-code">TR</span>
+      </a>
     </div>
 
-    <a href="https://www.instagram.com/drealima_software/" target="_blank" class="instagram-icon">
-      <i class="fa-brands fa-instagram"></i>
-    </a>
   </nav>
 </header>
 
@@ -689,6 +800,9 @@ footer {
 
 <footer>
   © 2026 DREALIMA. Alle Rechte vorbehalten.
+  <a href="https://www.instagram.com/drealima_software/" target="_blank" rel="noopener noreferrer" class="instagram-icon" aria-label="Drealima Instagram" style="margin:16px auto 0;text-decoration:none;">
+    <i class="fa-brands fa-instagram"></i>
+  </a>
 </footer>
 
 <script>
