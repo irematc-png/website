@@ -10,3 +10,155 @@
 #drai-video{width:100%;height:245px;object-fit:cover;background:#0a1822;display:block}
 #drai-live-caption{position:absolute;bottom:8px;left:9px;right:9px;background:#071923b8;color:#fff;padding:7px 10px;border-radius:8px;font-size:12px}
 @media(max-width:520px){#drai-video{height:210px}#drai-video-box{min-height:190px;max-height:210px}}
+
+/* ==========================================
+   DREALIMA AVATAR - MOBILE RESPONSIVE
+   Desktop tasarimini etkilemez
+   ========================================== */
+
+@media (max-width: 520px) {
+
+  /* Avatar acma butonu */
+  #drai-launch {
+    width: 54px;
+    height: 54px;
+    right: 12px;
+    bottom: 14px;
+    border-width: 2px;
+  }
+
+  /* Avatar ana penceresi */
+  #drai-panel {
+    width: min(330px, calc(100vw - 24px));
+    height: min(465px, calc(100dvh - 100px));
+    right: 12px;
+    bottom: 80px;
+    border-radius: 16px;
+    font-size: 12px;
+  }
+
+  /* Ust baslik */
+  #drai-head {
+    padding: 9px 11px;
+    gap: 8px;
+  }
+
+  #drai-head img {
+    width: 38px;
+    height: 38px;
+  }
+
+  #drai-close {
+    font-size: 22px;
+  }
+
+  /* Canli avatar butonlari */
+  #drai-live-actions {
+    padding: 7px 9px;
+    gap: 6px;
+  }
+
+  #drai-live-actions button {
+    padding: 8px 10px;
+    font-size: 12px;
+    border-radius: 8px;
+  }
+
+  /* Avatar video alani */
+  #drai-video-box {
+    min-height: 0;
+    max-height: 170px;
+  }
+
+  #drai-video {
+    height: 170px;
+    object-fit: cover;
+  }
+
+  #drai-live-caption {
+    font-size: 10px;
+    padding: 5px 7px;
+  }
+
+  /* Mesaj alani */
+  #drai-messages {
+    padding: 9px;
+    gap: 7px;
+    min-height: 0;
+  }
+
+  .drai-bubble {
+    padding: 8px 10px;
+    font-size: 12px;
+    line-height: 1.4;
+  }
+
+  /* Mesaj yazma alani */
+  #drai-controls {
+    padding: 7px;
+    gap: 5px;
+  }
+
+  #drai-input {
+    padding: 8px;
+    font-size: 12px;
+  }
+
+  #drai-controls button {
+    padding: 8px 9px;
+    font-size: 12px;
+  }
+
+  /* Alt bilgi */
+  #drai-footer {
+    padding: 5px 9px;
+  }
+
+  #drai-status {
+    font-size: 10px;
+  }
+}
+
+/* Kucuk ekranli telefonlar */
+@media (max-width: 360px) {
+
+  #drai-panel {
+    width: calc(100vw - 20px);
+    right: 10px;
+    height: min(420px, calc(100dvh - 95px));
+  }
+
+  #drai-video-box {
+    max-height: 145px;
+  }
+
+  #drai-video {
+    height: 145px;
+  }
+}
+
+/* Mobilde avatar acilirken sayfa kaymasini onle */
+@media (max-width: 520px) {
+  #drai-launch {
+    position: fixed !important;
+    right: 12px;
+    bottom: 14px;
+    transform: none;
+  }
+
+  #drai-panel {
+    position: fixed !important;
+    right: 12px;
+    bottom: 80px;
+    top: auto;
+    left: auto;
+    max-height: calc(100dvh - 100px);
+    overscroll-behavior: contain;
+  }
+
+  #drai-messages {
+    min-height: 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+}
