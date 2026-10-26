@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DREALIMA - Digital Growth Systems</title>
+<link rel="icon" href="minilogo.png" type="image/png">
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=AW-18131739913"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'AW-18131739913');
+</script>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  color: #ffffff;
+  background:
+    linear-gradient(rgba(8, 15, 28, 0.82), rgba(8, 15, 28, 0.88)),
+    url("bgimage.jpeg");
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+}
+
+header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  height: 88px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 60px;
+  background: rgba(8, 15, 28, 0.76);
+  backdrop-filter: blur(18px);
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+}
+
+.logo img {
+  height: 105px;
+  width: auto;
+  display: block;
+  filter: drop-shadow(0 8px 22px rgba(0,0,0,0.35));
+}
+
+.nav-brand {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+}
+
+.brand-name {
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: 3px;
+}
+
+.brand-tag {
+  font-size: 12px;
+  color: rgba(255,255,255,0.62);
+  letter-spacing: 1.2px;
+}
+
+nav {
+  display: flex;
+  gap: 22px;
+  align-items: center;
+}
+
+nav a {
+  color: rgba(255,255,255,0.72);
+  text-decoration: none;
+  font-size: 13px;
+  letter-spacing: 0.7px;
+  padding: 8px 9px;
+  border-radius: 8px;
+  transition: 0.25s;
+}
+
+nav a:hover {
+  color: white;
+  background: rgba(255,255,255,0.07);
+}
+
+.hamburger {
+  display: none;
+  font-size: 28px;
+  cursor: pointer;
+}
+
+.lang-switch {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.lang-switch img {
+  width: 24px;
+  height: 15px;
+}
+
+.instagram-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 27px;
+  height: 27px;
+  background: linear-gradient(45deg, #f58529, #dd2a7b, #8134af);
+  color: white;
+  border-radius: 50%;
+  font-size: 18px;
+}
+
+.instagram-icon:hover { transform: scale(1.1); }
+
+.hero {
+  max-width: 1120px;
+  margin: 70px auto 80px;
+  padding: 80px 28px;
+  text-align: center;
+}
+
+.hero-content {
+  max-width: 940px;
+  margin: 0 auto;
+  padding: 64px 42px;
+  background: rgba(255,255,255,0.055);
+  border: 1px solid rgba(255,255,255,0.09);
+  border-radius: 30px;
+  backdrop-filter: blur(12px);
+  box-shadow: 0 24px 80px rgba(0,0,0,0.24);
+}
+
+.eyebrow {
+  display: inline-block;
+  margin-bottom: 22px;
+  padding: 9px 16px;
+  border-radius: 999px;
+  background: rgba(44,190,172,0.13);
+  border: 1px solid rgba(44,190,172,0.24);
+  color: #87f1de;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.hero h1 {
+  font-size: clamp(38px, 5.5vw, 66px);
+  line-height: 1.06;
+  margin: 0 0 24px;
+  letter-spacing: -1.8px;
+  text-shadow: 0 12px 42px rgba(0,0,0,0.45);
+}
+
+.hero h1 span {
+  background: linear-gradient(90deg, #7ce6d4, #f5d76e);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.hero p {
+  font-size: 18px;
+  color: rgba(255,255,255,0.86);
+  max-width: 700px;
+  margin: 0 auto 30px;
+  line-height: 1.7;
+}
+
+.hero-actions {
+  display: flex;
+  gap: 14px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.btn {
+  background: linear-gradient(90deg, #d4af37, #f5d76e);
+  color: #0b1220;
+  padding: 15px 32px;
+  border-radius: 12px;
+  font-weight: 800;
+  text-decoration: none;
+  display: inline-block;
+  border: none;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 34px rgba(212,175,55,0.22);
+}
+
+.btn.secondary {
+  background: rgba(255,255,255,0.07);
+  color: white;
+  border: 1px solid rgba(255,255,255,0.13);
+}
+
+.trust {
+  margin-top: 34px;
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  font-size: 13px;
+  color: rgba(255,255,255,0.72);
+}
+
+.trust span {
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.055);
+  border: 1px solid rgba(255,255,255,0.08);
+}
+
+.section {
+  padding: 90px 60px;
+  text-align: center;
+}
+
+.section-wrapper {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 60px 40px;
+  background: rgba(255,255,255,0.045);
+  border: 1px solid rgba(255,255,255,0.085);
+  border-radius: 24px;
+  backdrop-filter: blur(12px);
+  transition: 0.3s;
+}
+
+.section-wrapper:hover {
+  transform: translateY(-2px);
+  border-color: rgba(212,175,55,0.22);
+}
+
+.section h2 {
+  display: inline-block;
+  padding: 10px 24px;
+  margin: 0 0 42px;
+  background: rgba(255,255,255,0.055);
+  border: 1px solid rgba(255,255,255,0.09);
+  border-radius: 14px;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+}
+
+.cards {
+  display: flex;
+  justify-content: center;
+  gap: 22px;
+  flex-wrap: wrap;
+}
+
+.card {
+  width: 280px;
+  min-height: 185px;
+  padding: 26px;
+  border-radius: 18px;
+  background: rgba(13, 24, 42, 0.76);
+  border: 1px solid rgba(255,255,255,0.08);
+  cursor: pointer;
+  transition: 0.3s;
+  backdrop-filter: blur(10px);
+}
+
+.card:hover {
+  transform: translateY(-7px);
+  border-color: rgba(44,190,172,0.26);
+  box-shadow: 0 18px 44px rgba(0,0,0,0.22);
+}
+
+.card h3 {
+  margin-top: 0;
+  color: #ffffff;
+}
+
+.card p {
+  color: rgba(255,255,255,0.72);
+  line-height: 1.6;
+}
+
+.card-detail {
+  opacity: 0;
+  visibility: hidden;
+  max-height: 0;
+  overflow: hidden;
+  transform: translateY(10px);
+  transition: all 0.3s ease;
+  font-style: italic;
+}
+
+.card:hover .card-detail,
+.card.active .card-detail {
+  opacity: 1;
+  visibility: visible;
+  max-height: 460px;
+  transform: translateY(0);
+}
+
+.portfolio-img {
+  width: 92%;
+  object-fit: cover;
+  border-radius: 10px;
+  cursor: pointer;
+  margin: 6px;
+  border: 1px solid rgba(255,255,255,0.08);
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.66);
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.modal img {
+  width: 80%;
+  max-width: 850px;
+  max-height: 85vh;
+  background: white;
+  padding: 12px;
+  border-radius: 14px;
+  box-shadow: 0 18px 50px rgba(0,0,0,0.45);
+}
+
+.modal img.small {
+  max-width: 420px;
+  width: 80%;
+  max-height: 72vh;
+}
+
+.contact-form {
+  max-width: 620px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.contact-form input,
+.contact-form textarea {
+  padding: 15px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.09);
+  background: rgba(13,24,42,0.82);
+  color: white;
+  outline: none;
+  font-family: inherit;
+}
+
+.contact-form input::placeholder,
+.contact-form textarea::placeholder {
+  color: rgba(255,255,255,0.48);
+}
+
+.whatsapp-btn {
+  position: fixed;
+  bottom: 25px;
+  right: 25px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #25D366;
+  color: white;
+  padding: 12px 18px;
+  border-radius: 50px;
+  font-size: 14px;
+  font-weight: 700;
+  text-decoration: none;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.32);
+  z-index: 999;
+  transition: 0.3s ease;
+}
+
+.whatsapp-btn img {
+  width: 22px;
+  height: 22px;
+}
+
+.whatsapp-btn:hover { transform: translateY(-2px) scale(1.03); }
+
+footer {
+  text-align: center;
+  padding: 44px;
+  color: rgba(255,255,255,0.42);
+  font-size: 13px;
+}
+
+@media (max-width: 768px) {
+  header {
+    height: 74px;
+    padding: 12px 18px;
+  }
+
+  .logo img { height: 50px; }
+
+  .nav-brand { display: none; }
+
+  .hamburger { display: block; }
+
+  nav {
+    position: absolute;
+    top: 74px;
+    right: 16px;
+    display: none;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    min-width: 210px;
+    padding: 16px;
+    background: rgba(8,15,28,0.96);
+    border: 1px solid rgba(255,255,255,0.09);
+    border-radius: 16px;
+  }
+
+  nav.active { display: flex; }
+
+  .hero {
+    margin: 35px auto 50px;
+    padding: 54px 18px;
+  }
+
+  .hero-content {
+    padding: 38px 22px;
+    border-radius: 22px;
+  }
+
+  .hero p { font-size: 16px; }
+
+  .section {
+    padding: 58px 18px;
+  }
+
+  .section-wrapper {
+    padding: 42px 20px;
+  }
+
+  .card { width: 100%; }
+
+  .whatsapp-btn span { display: none; }
+
+  .whatsapp-btn { padding: 14px; }
+}
+</style>
+<link rel="stylesheet" href="avatar.css">
+</head>
+
+<body>
+
+<header>
+  <a href="#home" class="logo">
+    <img src="logo.png" alt="Drealima Logo">
+  </a>
+
+  <div class="nav-brand">
+    <div class="brand-name">DREALIMA</div>
+    <div class="brand-tag">Beyond Imagination Until Reality</div>
+  </div>
+
+  <div class="hamburger" onclick="toggleMenu()">☰</div>
+
+  <nav>
+    <a href="#home">Home</a>
+    <a href="#services">Services</a>
+    <a href="#portfolio">Portfolio</a>
+    <a href="#contact">Contact</a>
+
+    <div class="lang-switch">
+      <a href="en.html"><img src="en.png" alt="English"></a>
+      <a href="index.html"><img src="tr.png" alt="Türkçe"></a>
+      <a href="de.html"><img src="de.png" alt="Deutsch"></a>
+    </div>
+
+    <a href="https://www.instagram.com/drealima_software/" target="_blank" class="instagram-icon">
+      <i class="fa-brands fa-instagram"></i>
+    </a>
+  </nav>
+</header>
+
+<section class="hero" id="home">
+  <div class="hero-content">
+    <div class="eyebrow">DIGITAL PRODUCTS • SMART SOLUTIONS</div>
+
+    <h1>We Turn Ideas Into <span>Digital Products</span></h1>
+
+    <p>
+      We build websites, mobile apps, and automation systems that help your business become more visible,
+      faster, and more efficient.
+    </p>
+
+    <div class="hero-actions">
+      <a href="#contact" class="btn">Get a Quote</a>
+      <a href="https://wa.me/905422443543?text=Hello%20I%20would%20like%20to%20get%20information%20about%20Drealima."
+         class="btn secondary" target="_blank">Write on WhatsApp</a>
+    </div>
+
+    <div class="trust">
+      <span>✔ Websites</span>
+      <span>✔ Mobile Apps</span>
+      <span>✔ Automation</span>
+      <span>✔ Digital Products</span>
+      <span>✔ Fast Delivery</span>
+      <span>✔ Scalable Systems</span>
+    </div>
+
+    <p style="margin-top:22px; font-weight:600; color:#f5d76e;">
+      Beyond Imagination Until Reality
+    </p>
+  </div>
+</section>
+
+<section class="section" id="services">
+  <div class="section-wrapper">
+    <h2>Services</h2>
+
+    <div class="cards">
+      <div class="card" onclick="toggleCard(this)">
+        <h3>Web Design</h3>
+        <p>Modern, fast, and mobile-friendly business websites.</p>
+        <div class="card-detail">
+          <p>We build SEO-friendly, trustworthy, and conversion-focused websites tailored for your business.</p>
+        </div>
+      </div>
+
+      <div class="card" onclick="toggleCard(this)">
+        <h3>Mobile Apps</h3>
+        <p>Digital product solutions for iOS and Android.</p>
+        <div class="card-detail">
+          <p>We turn your business into a mobile experience that reaches your customers directly.</p>
+        </div>
+      </div>
+
+      <div class="card" onclick="toggleCard(this)">
+        <h3>Automation</h3>
+        <p>CRM and business process systems.</p>
+        <div class="card-detail">
+          <p>We build systems that automate processes, save time, and support your growth.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="section-wrapper">
+    <h2>Why DREALIMA?</h2>
+
+    <div class="cards">
+      <div class="card" onclick="toggleCard(this)">
+        <h3>Business Focused</h3>
+        <p>Not just software, but systems that create real business value.</p>
+        <div class="card-detail">
+          <p>Our products are designed with visibility, customer acquisition, and operational efficiency in mind.</p>
+        </div>
+      </div>
+
+      <div class="card" onclick="toggleCard(this)">
+        <h3>Fast Delivery</h3>
+        <p>From idea to live product — fast and structured.</p>
+        <div class="card-detail">
+          <p>Instead of long processes, we work with clear planning, clean scope, and fast execution.</p>
+        </div>
+      </div>
+
+      <div class="card" onclick="toggleCard(this)">
+        <h3>Scalable Systems</h3>
+        <p>Structures that grow with your business.</p>
+        <div class="card-detail">
+          <p>We design systems that can reliably handle increasing users, operations, and requirements.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="portfolio">
+  <div class="section-wrapper">
+    <h2>Portfolio</h2>
+
+    <div class="cards">
+      <div class="card" onclick="toggleCard(this)">
+        <h3>Live Gold & Currency Tracker</h3>
+        <p>Real-time dashboard for gold prices and exchange rates, built for jewelry businesses.</p>
+        <div class="card-detail">
+          <img src="kuyum.png" onclick="openModal(this); event.stopPropagation();" class="portfolio-img" alt="Gold Dashboard">
+          <img src="kuyum2.png" onclick="openModal(this); event.stopPropagation();" class="portfolio-img" alt="Currency Dashboard">
+        </div>
+      </div>
+
+      <div class="card" onclick="toggleCard(this)">
+        <h3>Barcode Inventory Tracking System</h3>
+        <p>Monitor barcoded products and inventory levels easily and quickly.</p>
+        <div class="card-detail">
+          <img src="Barkod.jpeg" onclick="openModal(this); event.stopPropagation();" class="portfolio-img small-modal" alt="Barcode System">
+        </div>
+      </div>
+
+      <div class="card" onclick="toggleCard(this)">
+        <h3>BodyCare Mobile App</h3>
+        <p>A daily workout plan and a simple tracking system.</p>
+        <div class="card-detail">
+          <img src="bodyCare1.png" onclick="openModal(this); event.stopPropagation();" class="portfolio-img small-modal" alt="BodyCare App 1">
+          <img src="bodyCare2.png" onclick="openModal(this); event.stopPropagation();" class="portfolio-img small-modal" alt="BodyCare App 2">
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div id="modal" class="modal" onclick="closeModal()">
+  <img id="modalImg" alt="Portfolio Preview">
+</div>
+
+<section class="section" id="contact">
+  <div class="section-wrapper">
+    <h2>Start Your Project</h2>
+
+    <form class="contact-form" id="contactForm">
+      <input type="text" name="name" placeholder="Your Name" required>
+      <input type="email" name="email" placeholder="Your Email" required>
+      <input type="text" name="project_type" placeholder="Project Type" required>
+      <textarea rows="5" name="message" placeholder="Tell us about your project..." required></textarea>
+      <button type="submit" class="btn">Send Request</button>
+    </form>
+  </div>
+</section>
+
+<a href="https://wa.me/905422443543?text=Hello%20I%20would%20like%20to%20get%20information%20about%20Drealima."
+   class="whatsapp-btn" target="_blank">
+  <img src="https://cdn-icons-png.flaticon.com/512/733/733585.png" alt="WhatsApp">
+  <span>Message</span>
+</a>
+
+<footer>
+  © 2026 DREALIMA. All rights reserved.
+</footer>
+
+<script>
+function toggleCard(card) {
+  card.classList.toggle("active");
+}
+
+function toggleMenu() {
+  document.querySelector("nav").classList.toggle("active");
+}
+
+function openModal(img) {
+  const modal = document.getElementById("modal");
+  const modalImg = document.getElementById("modalImg");
+
+  modal.style.display = "flex";
+  modalImg.src = img.src;
+  modalImg.className = "";
+
+  if (img.classList.contains("small-modal")) {
+    modalImg.classList.add("small");
+  }
+}
+
+function closeModal() {
+  document.getElementById("modal").style.display = "none";
+}
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
+<script>
+(function(){
+  emailjs.init("X3IaFp_DgslGbNzF3");
+})();
+
+document.getElementById("contactForm").addEventListener("submit", function(e){
+  e.preventDefault();
+
+  const form = this;
+  const button = form.querySelector("button");
+
+  button.innerText = "Sending...";
+  button.disabled = true;
+
+  emailjs.sendForm(
+    "service_b9nd7il",
+    "template_bo38nmv",
+    form
+  ).then(function(){
+    alert("Message sent successfully!");
+    form.reset();
+    button.innerText = "Send Request";
+    button.disabled = false;
+  }, function(error){
+    alert("Failed to send message.");
+    console.log(error);
+    button.innerText = "Send Request";
+    button.disabled = false;
+  });
+});
+</script>
+
+<script defer src="avatar.js"></script>
+</body>
+</html>
