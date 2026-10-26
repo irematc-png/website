@@ -1,0 +1,5 @@
+DrealimaCRM/
+.git-eski/
+.env
+.env.*
+node_modules/
