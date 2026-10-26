@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="robots"
+        content="noindex, nofollow"
+    >
+
+    <meta
+        name="description"
+        content="Drealima müşteri proje ve çalışma takip portalı."
+    >
+
+    <title>Müşteri Portalı | Drealima</title>
+
+    <link
+        rel="stylesheet"
+        href="./css/portal.css?v=5"
+    >
+</head>
+
+<body class="login-page">
+
+    <main class="login-layout">
+
+        <section class="login-showcase">
+
+            <div class="showcase-overlay"></div>
+
+            <div class="showcase-content">
+
+                <header class="showcase-header">
+
+                    <a
+    href="/"
+    class="portal-logo portal-logo-light"
+    aria-label="Drealima ana sayfasına dön"
+>
+    <span class="logo-image-wrapper">
+        <img
+            src="./images/dlogo.jpeg"
+            alt="Drealima"
+            class="portal-logo-image"
+        >
+    </span>
+
+    <span class="logo-text">
+        <strong>Drealima</strong>
+        <small>Project Portal</small>
+    </span>
+</a>
+
+                    <span class="secure-badge">
+                        <span class="secure-dot"></span>
+                        Güvenli Müşteri Erişimi
+                    </span>
+
+                </header>
+
+                <div class="showcase-main">
+
+                    <span class="showcase-label">
+                        DREALIMA PROJECT PORTAL
+                    </span>
+
+                    <h1>
+                        Projenizin her aşamasını
+                        <span>şeffaflıkla takip edin.</span>
+                    </h1>
+
+                    <p>
+    Gerçekleştirilen çalışmaları, harcanan süreleri
+    ve kalan proje saatlerini güvenli biçimde takip edin.
+</p>
+
+                    <div class="feature-list">
+
+    <div class="feature-item">
+        <span class="feature-icon">✓</span>
+
+        <div>
+            <strong>Günlük çalışma kayıtları</strong>
+            <small>
+                Yapılan işlemleri tarih ve konu bazında görün.
+            </small>
+        </div>
+    </div>
+
+    <div class="feature-item">
+        <span class="feature-icon">✓</span>
+
+        <div>
+            <strong>Anlık süre takibi</strong>
+            <small>
+                Kullanılan ve kalan süreyi takip edin.
+            </small>
+        </div>
+    </div>
+
+    <div class="feature-item">
+        <span class="feature-icon">✓</span>
+
+        <div>
+            <strong>Güvenli müşteri alanı</strong>
+            <small>
+                Yalnızca size ait projelere erişin.
+            </small>
+        </div>
+    </div>
+
+</div>
+
+                </div>
+
+                <footer class="showcase-footer">
+                    <span>
+                        Beyond imagination until reality.
+                    </span>
+
+                    <span>
+                        © 2026 Drealima
+                    </span>
+                </footer>
+
+            </div>
+
+        </section>
+
+        <section class="login-panel">
+
+            <div class="mobile-logo">
+
+                <a
+    href="/"
+    class="portal-logo"
+>
+    <span class="logo-image-wrapper small">
+        <img
+            src="./images/dlogo.jpeg"
+            alt="Drealima"
+            class="portal-logo-image"
+        >
+    </span>
+
+    <span class="logo-text">
+        <strong>Drealima</strong>
+        <small>Project Portal</small>
+    </span>
+</a>
+
+            </div>
+
+            <div class="login-card">
+
+                <div class="login-card-heading">
+
+                    <span class="section-label">
+                        MÜŞTERİ GİRİŞİ
+                    </span>
+
+                    <h2>Tekrar hoş geldiniz</h2>
+
+                    <p>
+                        Projenizin güncel durumunu görüntülemek için
+                        hesabınıza giriş yapın.
+                    </p>
+
+                </div>
+
+                <form
+                    id="loginForm"
+                    novalidate
+                >
+
+                    <div class="form-group">
+
+                        <label for="email">
+                            E-posta adresi
+                        </label>
+
+                        <div class="input-container">
+
+                            <span class="input-icon">
+                                @
+                            </span>
+
+                            <input
+                                id="email"
+                                name="email"
+                                type="email"
+                                autocomplete="email"
+                                placeholder="ornek@firma.com"
+                                required
+                            >
+
+                        </div>
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <div class="label-row">
+
+                            <label for="password">
+                                Şifre
+                            </label>
+
+                            <button
+                                id="forgotPasswordButton"
+                                class="text-button"
+                                type="button"
+                            >
+                                Şifremi unuttum
+                            </button>
+
+                        </div>
+
+                        <div class="input-container">
+
+                            <span class="input-icon">
+                                •
+                            </span>
+
+                            <input
+                                id="password"
+                                name="password"
+                                type="password"
+                                autocomplete="current-password"
+                                placeholder="Şifrenizi girin"
+                                minlength="6"
+                                required
+                            >
+
+                            <button
+                                id="togglePasswordButton"
+                                class="password-toggle"
+                                type="button"
+                                aria-label="Şifreyi göster"
+                            >
+                                Göster
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                    <button
+                        id="loginButton"
+                        class="primary-button login-button"
+                        type="submit"
+                    >
+                        <span>Giriş Yap</span>
+                        <span class="button-arrow">→</span>
+                    </button>
+
+                    <p
+                        id="loginMessage"
+                        class="form-message"
+                        aria-live="polite"
+                    ></p>
+
+                </form>
+
+                <div class="login-security-note">
+
+                    <span class="security-icon">✓</span>
+
+                    <p>
+                        Bağlantınız güvenli şekilde korunmaktadır.
+                        Hesap bilgileriniz üçüncü kişilerle paylaşılmaz.
+                    </p>
+
+                </div>
+
+                <div class="login-footer">
+
+                    <span>Giriş konusunda yardıma mı ihtiyacınız var?</span>
+
+                    <a href="mailto:info@drealimaofficial.com">
+                        Bizimle iletişime geçin
+                    </a>
+
+                </div>
+
+            </div>
+
+            <a
+                class="back-to-site"
+                href="/"
+            >
+                ← Drealima ana sayfasına dön
+            </a>
+
+        </section>
+
+    </main>
+
+    <script
+        type="module"
+        src="./js/login.js?v=5"
+    ></script>
+
+</body>
+</html>

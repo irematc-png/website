@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="robots"
+        content="noindex, nofollow"
+    >
+
+    <title>Proje Takibi | Drealima</title>
+
+    <link
+        rel="stylesheet"
+        href="./css/portal.css"
+    >
+</head>
+
+<body class="portal-page customer-dashboard auth-loading">
+
+    <header class="portal-header">
+
+        <a
+    href="/"
+    class="portal-logo dashboard-logo"
+    aria-label="Drealima ana sayfasına dön"
+>
+    <span class="dashboard-logo-wrapper">
+        <img
+            src="./images/dlogo.jpeg"
+            alt="Drealima"
+            class="dashboard-logo-image"
+        >
+    </span>
+
+    <span class="logo-text">
+        <strong>Drealima</strong>
+        <small>Project Portal</small>
+    </span>
+</a>
+
+        <div class="header-user">
+
+            <div class="header-user-information">
+                <strong id="userName">
+                    Kullanıcı
+                </strong>
+
+                <small id="userEmail">
+                    —
+                </small>
+            </div>
+
+            <button
+                id="logoutButton"
+                class="secondary-button"
+                type="button"
+            >
+                Çıkış Yap
+            </button>
+
+        </div>
+
+    </header>
+
+    <main class="portal-container">
+
+        <section class="project-heading">
+
+            <div>
+                <span class="section-label">
+                    PROJE TAKİBİ
+                </span>
+
+                <h1 id="projectName">
+                    Proje bilgileri yükleniyor...
+                </h1>
+
+                <p id="clientName">
+                    —
+                </p>
+            </div>
+
+            <span
+                id="projectStatus"
+                class="status-pill active"
+            >
+                Aktif
+            </span>
+
+        </section>
+
+        <section class="summary-grid">
+
+    <article class="summary-card">
+        <span>Tanımlanan Süre</span>
+
+        <div>
+            <strong id="totalHours">0 saat</strong>
+        </div>
+    </article>
+
+    <article class="summary-card">
+        <span>Kullanılan Süre</span>
+
+        <div>
+            <strong id="usedHours">0 dakika</strong>
+        </div>
+    </article>
+
+    <article class="summary-card">
+        <span>Kalan Süre</span>
+
+        <div>
+            <strong id="remainingHours">0 saat</strong>
+        </div>
+    </article>
+
+    <article class="summary-card">
+        <span>Çalışma Kaydı</span>
+
+        <div>
+            <strong id="logCount">0</strong>
+            <small>kayıt</small>
+        </div>
+    </article>
+
+</section>
+
+        <section class="content-card logs-table-card">
+
+    <div class="content-heading logs-heading">
+        <div>
+            <h2>Günlük Çalışma Logları</h2>
+
+            <p>
+                Proje kapsamında gerçekleştirilen çalışmaları
+                tarih aralığına göre görüntüleyin.
+            </p>
+        </div>
+    </div>
+
+    <div class="log-filter-panel">
+
+    <div class="quick-filter-group">
+
+        <button
+            type="button"
+            class="quick-filter-button"
+            data-filter="today"
+        >
+            Bugün
+        </button>
+
+        <button
+            type="button"
+            class="quick-filter-button"
+            data-filter="thisWeek"
+        >
+            Bu Hafta
+        </button>
+
+        <button
+            type="button"
+            class="quick-filter-button"
+            data-filter="thisMonth"
+        >
+            Bu Ay
+        </button>
+
+        <button
+            type="button"
+            class="quick-filter-button"
+            data-filter="last30Days"
+        >
+            Son 30 Gün
+        </button>
+
+        <button
+            type="button"
+            class="quick-filter-button active"
+            data-filter="all"
+        >
+            Tümü
+        </button>
+
+    </div>
+
+    <div class="log-filter-main">
+
+        <div class="log-filter-group">
+
+            <div class="filter-field">
+                <label for="startDateFilter">
+                    Başlangıç Tarihi
+                </label>
+
+                <input
+                    id="startDateFilter"
+                    type="date"
+                >
+            </div>
+
+            <div class="filter-field">
+                <label for="endDateFilter">
+                    Bitiş Tarihi
+                </label>
+
+                <input
+                    id="endDateFilter"
+                    type="date"
+                >
+            </div>
+
+            <div class="filter-field page-size-field">
+                <label for="pageSizeSelect">
+                    Sayfa Başına
+                </label>
+
+                <select id="pageSizeSelect">
+                    <option value="5">5 kayıt</option>
+                    <option value="10" selected>10 kayıt</option>
+                    <option value="20">20 kayıt</option>
+                    <option value="50">50 kayıt</option>
+                </select>
+            </div>
+
+        </div>
+
+        <div class="log-filter-actions">
+
+            <button
+                id="applyFilterButton"
+                class="primary-button filter-button"
+                type="button"
+            >
+                Filtrele
+            </button>
+
+            <button
+                id="clearFilterButton"
+                class="secondary-button filter-button"
+                type="button"
+            >
+                Temizle
+            </button>
+			
+			
+
+   <button
+    id="exportLogsButton"
+    class="secondary-button filter-button export-button"
+    type="button"
+>
+    Excel'e Aktar
+</button>
+
+
+</div>
+
+        </div>
+
+    </div>
+
+</div>
+
+    <div
+        id="filterSummary"
+        class="filter-summary hidden"
+    ></div>
+
+    <div
+        id="loadingState"
+        class="empty-state"
+    >
+        Çalışma kayıtları yükleniyor...
+    </div>
+
+    <div
+        id="emptyState"
+        class="empty-state hidden"
+    >
+        Seçilen kriterlere uygun çalışma kaydı bulunmuyor.
+    </div>
+
+    <div
+        id="tableWrapper"
+        class="logs-table-wrapper hidden"
+    >
+
+        <table class="logs-table">
+
+            <thead>
+                <tr>
+                    <th>Tarih</th>
+                    <th>Madde</th>
+                    <th>Konu</th>
+                    <th>Yapılan Çalışma</th>
+                    <th>Süre</th>
+                    <th>Durum</th>
+                </tr>
+            </thead>
+
+            <tbody id="logsTableBody">
+            </tbody>
+
+        </table>
+
+    </div>
+
+    <div
+        id="paginationContainer"
+        class="pagination-container hidden"
+    >
+
+        <div
+            id="paginationSummary"
+            class="pagination-summary"
+        >
+        </div>
+
+        <div class="pagination-controls">
+
+            <button
+                id="firstPageButton"
+                class="pagination-button"
+                type="button"
+                aria-label="İlk sayfa"
+            >
+                «
+            </button>
+
+            <button
+                id="previousPageButton"
+                class="pagination-button"
+                type="button"
+                aria-label="Önceki sayfa"
+            >
+                ‹
+            </button>
+
+            <div
+                id="pageNumbers"
+                class="page-numbers"
+            ></div>
+
+            <button
+                id="nextPageButton"
+                class="pagination-button"
+                type="button"
+                aria-label="Sonraki sayfa"
+            >
+                ›
+            </button>
+
+            <button
+                id="lastPageButton"
+                class="pagination-button"
+                type="button"
+                aria-label="Son sayfa"
+            >
+                »
+            </button>
+
+        </div>
+
+    </div>
+
+</section>
+
+        <section class="content-card">
+
+            <div class="content-heading">
+                <div>
+                    <h2>Günlük Çalışma Logları</h2>
+
+                    <p>
+                        Proje kapsamında gerçekleştirilen
+                        güncel çalışmalar.
+                    </p>
+                </div>
+            </div>
+
+            <div
+                id="loadingState"
+                class="empty-state"
+            >
+                Çalışma kayıtları yükleniyor...
+            </div>
+
+            <div
+                id="emptyState"
+                class="empty-state hidden"
+            >
+                Henüz çalışma kaydı bulunmuyor.
+            </div>
+
+            <div
+                id="logsContainer"
+                class="logs-container"
+            ></div>
+
+        </section>
+
+    </main>
+
+    <script
+        type="module"
+        src="./js/dashboard.js"
+    ></script>
+	
+<script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js">
+</script>
+
+<script
+    type="module"
+    src="./js/dashboard.js?v=14">
+</script>
+
+</body>
+</html>
