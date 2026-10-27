@@ -627,65 +627,11 @@ img[src="logo.png"] {
 }
 </style>
 
+
+
 <style id="drealima-header-alignment">
 
-/* Desktop: TR sayfasinin header yerlesimi */
-@media (min-width: 1051px) {
-  header {
-    display: grid;
-    grid-template-columns:
-      minmax(180px, 220px)
-      minmax(190px, 1fr)
-      auto;
-    align-items: center;
-    column-gap: 28px;
-    padding: 16px 60px;
-  }
-
-  header > .logo {
-    justify-self: start;
-    min-width: 0;
-  }
-
-  header > .nav-brand {
-    position: static;
-    left: auto;
-    transform: none;
-    justify-self: center;
-    text-align: center;
-    white-space: nowrap;
-  }
-}
-
-/* Orta boy ekranlarda TR ile ayni duzen */
-@media (min-width: 1051px) and (max-width: 1500px) {
-  header {
-    grid-template-columns: minmax(160px, 200px) 1fr;
-  }
-}
-
-/* Tablet ve mobil: TR sayfasinin header duzeni */
-@media (max-width: 1050px) {
-  header {
-    height: 74px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 12px 18px;
-  }
-
-  header > .logo {
-    margin: 0;
-    flex-shrink: 0;
-  }
-
-  header > .nav-brand {
-    display: none;
-  }
-}
-
 </style>
-
 </head>
 
 <body>
@@ -877,7 +823,7 @@ img[src="logo.png"] {
 
 <footer>
   © 2026 DREALIMA. Alle Rechte vorbehalten.
-  <a href="https://www.instagram.com/drealima_software/" target="_blank" rel="noopener noreferrer" class="instagram-icon" aria-label="Drealima Instagram" style="margin:16px auto 0;text-decoration:none;">
+  <a href="https://www.instagram.com/drealimatechnology/" target="_blank" rel="noopener noreferrer" class="instagram-icon" aria-label="Drealima Instagram" style="margin:16px auto 0;text-decoration:none;">
     <i class="fa-brands fa-instagram"></i>
   </a>
 </footer>
@@ -946,3 +892,4 @@ document.getElementById("contactForm").addEventListener("submit", function(e){
 <script defer src="avatar.js"></script>
 </body>
 </html>
+
