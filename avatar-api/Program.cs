@@ -3,6 +3,7 @@ using System.Text;
 using System.Text.Json;
 using Microsoft.AspNetCore.RateLimiting;
 using System.Threading.RateLimiting;
+using System.Threading;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -281,6 +282,17 @@ app.MapPost("/api/conversation", async (
     }
 }).RequireRateLimiting("chat");
 
+// Availability is cached in-process. No token is created by this endpoint.
+app.MapGet("/api/avatar/status", () =>
+{
+    var configured = !string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable("LIVEAVATAR_API_KEY"))
+        && !string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable("LIVEAVATAR_AVATAR_ID"))
+        && !string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable("LIVEAVATAR_AGENT_ID"));
+    var enabled = Environment.GetEnvironmentVariable("LIVEAVATAR_ENABLED") != "false";
+    var available = configured && enabled && !AvatarAvailability.CreditsExhausted;
+    return Results.Ok(new { liveAvatarAvailable = available, availabilityVerified = false });
+});
+
 // =====================================================
 // LIVEAVATAR - CREATE SESSION TOKEN
 // =====================================================
@@ -290,6 +302,9 @@ app.MapPost("/api/avatar/session", async (
     CancellationToken ct
 ) =>
 {
+    if (AvatarAvailability.CreditsExhausted || Environment.GetEnvironmentVariable("LIVEAVATAR_ENABLED") == "false")
+        return Results.Json(new { code = "AVATAR_UNAVAILABLE", message = "Live avatar is temporarily unavailable" }, statusCode: 503);
+
     var apiKey = Environment.GetEnvironmentVariable(
         "LIVEAVATAR_API_KEY"
     );
@@ -362,27 +377,26 @@ app.MapPost("/api/avatar/session", async (
             $"LIVEAVATAR HTTP STATUS: {(int)response.StatusCode}"
         );
 
+        // Provider may return code 4033 in JSON even with HTTP 200.
+        var responseBody = await response.Content.ReadAsStringAsync(ct);
+        using var providerDoc = JsonDocument.Parse(responseBody);
+        var providerRoot = providerDoc.RootElement;
+        var insufficient = providerRoot.TryGetProperty("code", out var providerCode)
+            && providerCode.ToString() == "4033";
+        if (insufficient)
+        {
+            AvatarAvailability.MarkCreditsExhausted();
+            Console.WriteLine("LIVEAVATAR: insufficient credits; live mode disabled until service restart");
+            return Results.Json(new { code = "INSUFFICIENT_CREDITS", message = "Live avatar unavailable" }, statusCode: 503);
+        }
         if (!response.IsSuccessStatusCode)
-{
-    var errorBody = await response.Content.ReadAsStringAsync(ct);
-
-    Console.WriteLine(
-        $"LIVEAVATAR HTTP STATUS: {(int)response.StatusCode}"
-    );
-
-    Console.WriteLine(
-        $"LIVEAVATAR ERROR: {errorBody}"
-    );
-
-    return Results.Problem(
-        title: "LiveAvatar session creation failed",
-        detail: $"Upstream HTTP status: {(int)response.StatusCode}",
-        statusCode: 502
-    );
-}
+        {
+            Console.WriteLine($"LIVEAVATAR HTTP STATUS: {(int)response.StatusCode}");
+            return Results.Problem(title: "LiveAvatar session creation failed", statusCode: 502);
+        }
 
         using var document = JsonDocument.Parse(
-            await response.Content.ReadAsStringAsync(ct)
+            responseBody
         );
 
         var root = document.RootElement;
@@ -441,3 +455,11 @@ record ChatRequest(
     string? Language,
     string? SessionId
 );
+
+// A restart clears the cache after credits have been topped up.
+static class AvatarAvailability
+{
+    private static int _creditsExhausted;
+    public static bool CreditsExhausted => Volatile.Read(ref _creditsExhausted) == 1;
+    public static void MarkCreditsExhausted() => Interlocked.Exchange(ref _creditsExhausted, 1);
+}
